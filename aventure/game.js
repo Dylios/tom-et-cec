@@ -1,6 +1,7 @@
 /* =========================================================
    EXPEDITION 2028 — LE DERNIER CHAPITRE
    Prototype V0.1
+   PC + MOBILE
 ========================================================= */
 
 
@@ -24,6 +25,11 @@ const dialogueText = document.getElementById("dialogue-text");
 
 const interactionHint = document.getElementById("interaction-hint");
 
+const joystick = document.getElementById("joystick");
+const joystickKnob = document.getElementById("joystick-knob");
+
+const actionButton = document.getElementById("action-button");
+
 
 /* =========================================================
    GAME STATE
@@ -34,6 +40,11 @@ const game = {
   running: false,
 
   keys: {},
+
+  touch: {
+    x: 0,
+    y: 0
+  },
 
   player: {
     x: 480,
@@ -93,8 +104,13 @@ document.addEventListener("keydown", event => {
   game.keys[event.key.toLowerCase()] = true;
 
   if (
-    ["arrowup", "arrowdown", "arrowleft", "arrowright", " "]
-      .includes(event.key.toLowerCase())
+    [
+      "arrowup",
+      "arrowdown",
+      "arrowleft",
+      "arrowright",
+      " "
+    ].includes(event.key.toLowerCase())
   ) {
     event.preventDefault();
   }
@@ -113,6 +129,161 @@ document.addEventListener("keyup", event => {
   game.keys[event.key.toLowerCase()] = false;
 
 });
+
+
+/* =========================================================
+   MOBILE JOYSTICK
+========================================================= */
+
+let joystickPointerId = null;
+
+
+joystick.addEventListener(
+  "pointerdown",
+  event => {
+
+    event.preventDefault();
+
+    joystickPointerId = event.pointerId;
+
+    joystick.setPointerCapture(
+      joystickPointerId
+    );
+
+    updateJoystick(event);
+
+  }
+);
+
+
+joystick.addEventListener(
+  "pointermove",
+  event => {
+
+    if (
+      event.pointerId !== joystickPointerId
+    ) {
+      return;
+    }
+
+    updateJoystick(event);
+
+  }
+);
+
+
+joystick.addEventListener(
+  "pointerup",
+  resetJoystick
+);
+
+
+joystick.addEventListener(
+  "pointercancel",
+  resetJoystick
+);
+
+
+function updateJoystick(event) {
+
+  const rect = joystick.getBoundingClientRect();
+
+  const centerX =
+    rect.left + rect.width / 2;
+
+  const centerY =
+    rect.top + rect.height / 2;
+
+  let dx =
+    event.clientX - centerX;
+
+  let dy =
+    event.clientY - centerY;
+
+
+  const maxDistance =
+    rect.width * .32;
+
+  const distance =
+    Math.sqrt(dx * dx + dy * dy);
+
+
+  if (distance > maxDistance) {
+
+    dx =
+      (dx / distance) *
+      maxDistance;
+
+    dy =
+      (dy / distance) *
+      maxDistance;
+
+  }
+
+
+  game.touch.x =
+    dx / maxDistance;
+
+  game.touch.y =
+    dy / maxDistance;
+
+
+  joystickKnob.style.transform =
+    `translate(
+      calc(-50% + ${dx}px),
+      calc(-50% + ${dy}px)
+    )`;
+
+}
+
+
+function resetJoystick() {
+
+  joystickPointerId = null;
+
+  game.touch.x = 0;
+  game.touch.y = 0;
+
+  joystickKnob.style.transform =
+    "translate(-50%, -50%)";
+
+}
+
+
+/* =========================================================
+   MOBILE ACTION BUTTON
+========================================================= */
+
+actionButton.addEventListener(
+  "pointerdown",
+  event => {
+
+    event.preventDefault();
+
+    interact();
+
+  }
+);
+
+
+/* =========================================================
+   TOUCH DIALOGUE
+========================================================= */
+
+dialogueBox.addEventListener(
+  "pointerdown",
+  event => {
+
+    event.preventDefault();
+
+    if (game.dialogue) {
+
+      nextDialogue();
+
+    }
+
+  }
+);
 
 
 /* =========================================================
@@ -154,14 +325,19 @@ function gameLoop() {
 function update() {
 
   if (game.dialogue) {
+
     return;
+
   }
+
 
   let dx = 0;
   let dy = 0;
 
 
-  /* ----- movement ----- */
+  /* =====================================================
+     KEYBOARD
+  ===================================================== */
 
   if (
     game.keys["arrowup"] ||
@@ -194,53 +370,101 @@ function update() {
   }
 
 
-  /* ----- normalize diagonal movement ----- */
+  /* =====================================================
+     TOUCH
+  ===================================================== */
 
-  if (dx !== 0 && dy !== 0) {
+  if (
+    Math.abs(game.touch.x) > .15 ||
+    Math.abs(game.touch.y) > .15
+  ) {
 
-    dx *= .7071;
-    dy *= .7071;
+    dx += game.touch.x;
+    dy += game.touch.y;
 
   }
 
 
-  game.player.x += dx * game.player.speed;
-  game.player.y += dy * game.player.speed;
+  /* =====================================================
+     NORMALIZE
+  ===================================================== */
+
+  const magnitude =
+    Math.sqrt(dx * dx + dy * dy);
 
 
-  /* ----- boundaries ----- */
+  if (magnitude > 1) {
 
-  const margin = 35;
+    dx /= magnitude;
+    dy /= magnitude;
 
-  game.player.x = Math.max(
-    margin,
-    Math.min(canvas.width - margin, game.player.x)
-  );
-
-  game.player.y = Math.max(
-    margin,
-    Math.min(canvas.height - margin, game.player.y)
-  );
+  }
 
 
-  /* ----- interaction ----- */
+  /* =====================================================
+     MOVE
+  ===================================================== */
 
-  const distance = getDistance(
-    game.player,
-    game.npc
-  );
+  game.player.x +=
+    dx * game.player.speed;
+
+  game.player.y +=
+    dy * game.player.speed;
+
+
+  /* =====================================================
+     BOUNDARIES
+  ===================================================== */
+
+  const margin = 55;
+
+  game.player.x =
+    Math.max(
+      margin,
+      Math.min(
+        canvas.width - margin,
+        game.player.x
+      )
+    );
+
+  game.player.y =
+    Math.max(
+      margin,
+      Math.min(
+        canvas.height - margin,
+        game.player.y
+      )
+    );
+
+
+  /* =====================================================
+     INTERACTION
+  ===================================================== */
+
+  const distance =
+    getDistance(
+      game.player,
+      game.npc
+    );
+
 
   if (distance < 75) {
 
-    game.interactionTarget = "npc";
+    game.interactionTarget =
+      "npc";
 
-    interactionHint.classList.remove("hidden");
+    interactionHint.classList.remove(
+      "hidden"
+    );
 
   } else {
 
-    game.interactionTarget = null;
+    game.interactionTarget =
+      null;
 
-    interactionHint.classList.add("hidden");
+    interactionHint.classList.add(
+      "hidden"
+    );
 
   }
 
@@ -271,6 +495,7 @@ function drawRoom() {
   /* floor */
 
   ctx.fillStyle = "#8c765e";
+
   ctx.fillRect(
     0,
     0,
@@ -281,10 +506,13 @@ function drawRoom() {
 
   /* floor tiles */
 
-  ctx.strokeStyle = "rgba(50,40,30,.18)";
+  ctx.strokeStyle =
+    "rgba(50,40,30,.18)";
+
   ctx.lineWidth = 1;
 
   const tileSize = 48;
+
 
   for (
     let x = 0;
@@ -455,12 +683,24 @@ function drawBookshelf(x, y) {
   ];
 
 
-  for (let row = 0; row < 3; row++) {
+  for (
+    let row = 0;
+    row < 3;
+    row++
+  ) {
 
-    for (let i = 0; i < 7; i++) {
+    for (
+      let i = 0;
+      i < 7;
+      i++
+    ) {
 
       ctx.fillStyle =
-        bookColors[(i + row) % bookColors.length];
+        bookColors[
+          (i + row) %
+          bookColors.length
+        ];
+
 
       ctx.fillRect(
         x + 12 + i * 12,
@@ -484,9 +724,12 @@ function drawPlayer() {
 
   const p = game.player;
 
+
   /* shadow */
 
-  ctx.fillStyle = "rgba(0,0,0,.25)";
+  ctx.fillStyle =
+    "rgba(0,0,0,.25)";
+
 
   ctx.beginPath();
 
@@ -505,7 +748,8 @@ function drawPlayer() {
 
   /* body */
 
-  ctx.fillStyle = "#315a72";
+  ctx.fillStyle =
+    "#315a72";
 
   ctx.fillRect(
     p.x - 10,
@@ -517,7 +761,8 @@ function drawPlayer() {
 
   /* head */
 
-  ctx.fillStyle = "#d4a47b";
+  ctx.fillStyle =
+    "#d4a47b";
 
   ctx.fillRect(
     p.x - 8,
@@ -529,7 +774,8 @@ function drawPlayer() {
 
   /* hair */
 
-  ctx.fillStyle = "#292722";
+  ctx.fillStyle =
+    "#292722";
 
   ctx.fillRect(
     p.x - 8,
@@ -549,9 +795,12 @@ function drawNPC() {
 
   const p = game.npc;
 
+
   /* shadow */
 
-  ctx.fillStyle = "rgba(0,0,0,.25)";
+  ctx.fillStyle =
+    "rgba(0,0,0,.25)";
+
 
   ctx.beginPath();
 
@@ -570,7 +819,8 @@ function drawNPC() {
 
   /* body */
 
-  ctx.fillStyle = "#49634f";
+  ctx.fillStyle =
+    "#49634f";
 
   ctx.fillRect(
     p.x - 10,
@@ -582,7 +832,8 @@ function drawNPC() {
 
   /* head */
 
-  ctx.fillStyle = "#d4a47b";
+  ctx.fillStyle =
+    "#d4a47b";
 
   ctx.fillRect(
     p.x - 8,
@@ -594,7 +845,8 @@ function drawNPC() {
 
   /* hair */
 
-  ctx.fillStyle = "#594033";
+  ctx.fillStyle =
+    "#594033";
 
   ctx.fillRect(
     p.x - 8,
@@ -615,7 +867,9 @@ function interact() {
   if (
     game.interactionTarget !== "npc"
   ) {
+
     return;
+
   }
 
 
@@ -623,9 +877,7 @@ function interact() {
 
     startDialogue();
 
-  }
-
-  else {
+  } else {
 
     nextDialogue();
 
@@ -694,13 +946,18 @@ function startDialogue() {
 
 function showDialogue() {
 
-  const line = dialogue[dialogueIndex];
+  const line =
+    dialogue[dialogueIndex];
 
-  dialogueName.textContent = line.name;
+  dialogueName.textContent =
+    line.name;
 
-  dialogueText.textContent = line.text;
+  dialogueText.textContent =
+    line.text;
 
-  dialogueBox.classList.remove("hidden");
+  dialogueBox.classList.remove(
+    "hidden"
+  );
 
 }
 
@@ -711,7 +968,8 @@ function nextDialogue() {
 
 
   if (
-    dialogueIndex >= dialogue.length
+    dialogueIndex >=
+    dialogue.length
   ) {
 
     closeDialogue();
@@ -730,19 +988,24 @@ function closeDialogue() {
 
   game.dialogue = null;
 
-  dialogueBox.classList.add("hidden");
+  dialogueBox.classList.add(
+    "hidden"
+  );
 
 }
 
 
 /* =========================================================
-   UTILITIES
+   UTILITY
 ========================================================= */
 
 function getDistance(a, b) {
 
-  const dx = a.x - b.x;
-  const dy = a.y - b.y;
+  const dx =
+    a.x - b.x;
+
+  const dy =
+    a.y - b.y;
 
   return Math.sqrt(
     dx * dx +
