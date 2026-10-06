@@ -4,15 +4,11 @@
 // ============================================================
 
 
-// ------------------------------------------------------------
-// ÉTAT DE L'INTERACTION
-// ------------------------------------------------------------
-
 let interactionTarget = null;
 
 
 // ------------------------------------------------------------
-// DISTANCE ENTRE DEUX POINTS
+// DISTANCE
 // ------------------------------------------------------------
 
 function getDistance(a, b) {
@@ -29,44 +25,75 @@ function getDistance(a, b) {
 
 
 // ------------------------------------------------------------
-// MISE À JOUR DE L'INTERACTION
+// RECHERCHER L'OBJET LE PLUS PROCHE
 // ------------------------------------------------------------
 
-function updateInteraction() {
+function getNearestInteractiveObject() {
 
-  interactionTarget = null;
-
-
-  // ----------------------------------------------------------
-  // LIVRE CENTRAL
-  // ----------------------------------------------------------
-
-  const book = {
-    x: 11 * TILE_SIZE + TILE_SIZE / 2,
-    y: 7 * TILE_SIZE + TILE_SIZE / 2
-  };
+  let nearest = null;
+  let nearestDistance = Infinity;
 
 
-  const distance =
-    getDistance(player, book);
+  for (const object of MAP_OBJECTS) {
+
+    if (!object.interactive) {
+      continue;
+    }
 
 
-  if (distance < 65) {
+    const position =
+      getObjectPosition(object);
 
-    interactionTarget = "book";
 
-    interactionHint.classList.remove("hidden");
+    const distance =
+      getDistance(
+        player,
+        position
+      );
 
-    return;
+
+    if (
+      distance < 65 &&
+      distance < nearestDistance
+    ) {
+
+      nearest = object;
+
+      nearestDistance = distance;
+
+    }
 
   }
 
 
-  // ----------------------------------------------------------
-  // RIEN À PROXIMITÉ
-  // ----------------------------------------------------------
+  return nearest;
 
-  interactionHint.classList.add("hidden");
+}
+
+
+// ------------------------------------------------------------
+// MISE À JOUR
+// ------------------------------------------------------------
+
+function updateInteraction() {
+
+  interactionTarget =
+    getNearestInteractiveObject();
+
+
+  if (interactionTarget) {
+
+    interactionHint.classList.remove(
+      "hidden"
+    );
+
+  } else {
+
+    interactionHint.classList.add(
+      "hidden"
+    );
+
+  }
 
 }
 
@@ -82,13 +109,17 @@ function interact() {
   }
 
 
-  // ----------------------------------------------------------
-  // LIVRE
-  // ----------------------------------------------------------
+  switch (interactionTarget.type) {
 
-  if (interactionTarget === "book") {
+    case "book":
+      interactWithBook();
+      break;
 
-    interactWithBook();
+    default:
+      console.warn(
+        "Interaction inconnue :",
+        interactionTarget.type
+      );
 
   }
 
@@ -96,7 +127,7 @@ function interact() {
 
 
 // ------------------------------------------------------------
-// INTERACTION AVEC LE LIVRE
+// LIVRE
 // ------------------------------------------------------------
 
 function interactWithBook() {
@@ -107,25 +138,31 @@ function interactWithBook() {
 
 
   startDialogue([
+
     {
       name: "Livre",
-      text: "Les pages sont couvertes d'une écriture ancienne."
+      text:
+        "Les pages sont couvertes d'une écriture ancienne."
     },
 
     {
       name: "Livre",
-      text: "Certaines phrases semblent avoir été effacées."
+      text:
+        "Certaines phrases semblent avoir été effacées."
     },
 
     {
       name: "Livre",
-      text: "Une seule ligne reste parfaitement lisible."
+      text:
+        "Une seule ligne reste parfaitement lisible."
     },
 
     {
       name: "Livre",
-      text: "« Toute expédition commence avant même que ses voyageurs sachent où ils vont. »"
+      text:
+        "« Toute expédition commence avant même que ses voyageurs sachent où ils vont. »"
     }
+
   ]);
 
 }
