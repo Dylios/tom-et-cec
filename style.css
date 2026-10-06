@@ -1035,3 +1035,146 @@ h1 span {
   }
 
 }
+
+/* =========================================
+   HISTOIRE
+   ========================================= */
+
+.story {
+  width: min(760px, 88%);
+  margin: 0 auto;
+  padding: 10px 0 40px;
+}
+
+.story-chapter {
+  position: relative;
+  padding: 70px 0;
+  border-top: 1px solid rgba(58, 44, 36, 0.18);
+}
+
+.story-chapter:first-child {
+  border-top: none;
+}
+
+.story-marker {
+  margin-bottom: 18px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+
+.story-chapter h2 {
+  margin: 0 0 28px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.7rem;
+  font-weight: 500;
+  line-height: 1.05;
+  color: var(--wood);
+}
+
+.story-chapter p {
+  margin: 0 0 20px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.story-chapter p:last-child {
+  margin-bottom: 0;
+}
+
+.story-aside {
+  margin: 32px 0 !important;
+  padding-left: 25px;
+  border-left: 2px solid var(--gold);
+  font-family: "Inter", sans-serif !important;
+  font-size: 0.82rem !important;
+  font-style: italic;
+  line-height: 1.7 !important;
+  color: var(--wood-light) !important;
+}
+
+.proposal {
+  text-align: left;
+}
+
+.proposal-ending {
+  margin-top: 45px;
+  padding: 30px 20px;
+  text-align: center;
+  border-top: 1px solid rgba(58, 44, 36, 0.18);
+  border-bottom: 1px solid rgba(58, 44, 36, 0.18);
+}
+
+.proposal-ending span {
+  color: var(--gold);
+  font-size: 1.2rem;
+}
+
+.proposal-ending p {
+  margin: 15px 0;
+  font-size: 1.45rem;
+  font-style: italic;
+}
+
+.epilogue {
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+.epilogue .story-marker {
+  text-align: center;
+}
+
+.next-chapter {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 45px;
+  padding: 25px;
+  border: 1px solid rgba(58, 44, 36, 0.2);
+  background: rgba(231, 220, 200, 0.35);
+}
+
+.next-chapter span {
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+}
+
+.next-chapter strong {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.7rem;
+  font-weight: 500;
+  color: var(--wood);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+  .story {
+    width: 86%;
+  }
+
+  .story-chapter {
+    padding: 55px 0;
+  }
+
+  .story-chapter h2 {
+    font-size: 2.3rem;
+  }
+
+  .story-chapter p {
+    font-size: 1.15rem;
+  }
+
+  .story-aside {
+    padding-left: 18px;
+  }
+
+}
