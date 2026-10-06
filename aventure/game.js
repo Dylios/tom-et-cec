@@ -30,6 +30,13 @@ const joystickKnob = document.getElementById("joystick-knob");
 
 const actionButton = document.getElementById("action-button");
 
+const isTouchDevice =
+  navigator.maxTouchPoints > 0 ||
+  "ontouchstart" in window;
+
+if (isTouchDevice) {
+  document.body.classList.add("touch-device");
+}
 
 /* =========================================================
    GAME STATE
