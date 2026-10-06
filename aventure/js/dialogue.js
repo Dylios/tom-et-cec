@@ -17,7 +17,11 @@ let dialogueIndex = 0;
 
 function startDialogue(lines) {
 
+  // On stocke le dialogue actuellement joué.
+
   game.dialogue = lines;
+
+  // On commence à la première ligne.
 
   dialogueIndex = 0;
 
@@ -27,10 +31,17 @@ function startDialogue(lines) {
 
 
 // ------------------------------------------------------------
-// AFFICHER LE DIALOGUE
+// AFFICHER LA LIGNE ACTUELLE
 // ------------------------------------------------------------
 
 function showDialogue() {
+
+  // Sécurité
+
+  if (!game.dialogue) {
+    return;
+  }
+
 
   const line =
     game.dialogue[dialogueIndex];
@@ -51,16 +62,24 @@ function showDialogue() {
 
 
 // ------------------------------------------------------------
-// PASSER À LA LIGNE SUIVANTE
+// LIGNE SUIVANTE
 // ------------------------------------------------------------
 
 function nextDialogue() {
+
+  // Si aucun dialogue n'est ouvert,
+  // on ne fait rien.
 
   if (!game.dialogue) {
     return;
   }
 
+
   dialogueIndex++;
+
+
+  // Si on arrive après la dernière ligne,
+  // on ferme le dialogue.
 
   if (
     dialogueIndex >=
@@ -70,9 +89,12 @@ function nextDialogue() {
     closeDialogue();
 
     return;
+
   }
 
+
   showDialogue();
+
 }
 
 
@@ -86,6 +108,8 @@ function closeDialogue() {
 
   dialogueIndex = 0;
 
-  dialogueBox.classList.add("hidden");
+  dialogueBox.classList.add(
+    "hidden"
+  );
 
 }
