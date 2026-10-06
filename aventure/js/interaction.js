@@ -112,10 +112,23 @@ function interact() {
   switch (interactionTarget.type) {
 
     case "book":
+
       interactWithBook();
+
       break;
 
+
+    case "npc":
+
+      interactWithNPC(
+        interactionTarget
+      );
+
+      break;
+
+
     default:
+
       console.warn(
         "Interaction inconnue :",
         interactionTarget.type
