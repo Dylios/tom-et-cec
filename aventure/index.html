@@ -77,104 +77,91 @@
        JEU
   ========================== -->
 
-  <section id="game-screen" class="screen">
+<section id="game-screen" class="screen">
 
-    <div class="game-wrapper">
+  <div class="game-wrapper">
 
-      <canvas
-        id="game-canvas"
-        width="960"
-        height="540">
-      </canvas>
+    <canvas
+      id="game-canvas"
+      width="960"
+      height="540">
+    </canvas>
 
-
-      <!-- DIALOGUE -->
-
-      <div
-        id="dialogue-box"
-        class="dialogue hidden">
-
-        <div
-          id="dialogue-name"
-          class="dialogue-name">
-        </div>
-
-        <div
-          id="dialogue-text"
-          class="dialogue-text">
-        </div>
-
-        <div class="dialogue-continue">
-          ▼
-        </div>
-
-      </div>
-
-
-      <!-- PC INTERACTION -->
+    <div
+      id="dialogue-box"
+      class="dialogue hidden">
 
       <div
-        id="interaction-hint"
-        class="interaction-hint hidden">
-
-        E — Interagir
-
+        id="dialogue-name"
+        class="dialogue-name">
       </div>
 
+      <div
+        id="dialogue-text"
+        class="dialogue-text">
+      </div>
 
-      <!-- =========================
-           MOBILE CONTROLS
-      ========================== -->
-
-      <div id="mobile-controls">
-
-        <div
-          id="joystick"
-          class="joystick">
-
-          <div
-            id="joystick-knob"
-            class="joystick-knob">
-          </div>
-
-        </div>
-
-
-        <button
-          id="action-button"
-          class="action-button"
-          type="button">
-
-          A
-
-        </button>
-
+      <div class="dialogue-continue">
+        ▼
       </div>
 
     </div>
 
+    <div
+      id="interaction-hint"
+      class="interaction-hint hidden">
+      E — Interagir
+    </div>
 
-    <div class="game-help">
+  </div>
 
-      <span class="desktop-help">
-        ↑ ↓ ← → / ZQSD
-      </span>
 
-      <span class="desktop-help">
-        E : interagir
-      </span>
+  <!-- CONTRÔLES MOBILES -->
 
-      <span class="mobile-help">
-        Joystick : déplacer
-      </span>
+  <div id="mobile-controls">
 
-      <span class="mobile-help">
-        A : interagir
-      </span>
+    <div
+      id="joystick"
+      class="joystick">
+
+      <div
+        id="joystick-knob"
+        class="joystick-knob">
+      </div>
 
     </div>
 
-  </section>
+    <button
+      id="action-button"
+      class="action-button"
+      type="button">
+      A
+    </button>
+
+  </div>
+
+
+  <div class="game-help">
+
+    <span class="desktop-help">
+      ↑ ↓ ← → / ZQSD
+    </span>
+
+    <span class="desktop-help">
+      E : interagir
+    </span>
+
+    <span class="mobile-help">
+      Joystick : déplacer
+    </span>
+
+    <span class="mobile-help">
+      A : interagir
+    </span>
+
+  </div>
+
+</section>
 
 </main>
 
