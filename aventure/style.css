@@ -526,9 +526,9 @@ body {
 @media (max-width: 600px) {
 
   #game-screen {
-    justify-content: flex-start;
-
-    padding-top: 15px;
+    justify-content: center;
+    align-item : center;
+    padding: 0;
   }
 
 
