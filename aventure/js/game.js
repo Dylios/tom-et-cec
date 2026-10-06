@@ -115,8 +115,45 @@ enterWorldButton.addEventListener("click", () => {
 
 document.addEventListener("keydown", event => {
 
-  const key =
-    event.key.toLowerCase();
+  const key = event.key.toLowerCase();
+
+  // ----------------------------------------------------------
+  // DIALOGUE
+  // ----------------------------------------------------------
+
+  if (game.dialogue) {
+
+    // E = ligne suivante
+    if (key === "e") {
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      nextDialogue();
+
+      return;
+    }
+
+    // Échap = fermer le dialogue
+    if (key === "escape") {
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      closeDialogue();
+
+      return;
+    }
+
+    // Tant qu'un dialogue est ouvert,
+    // on ne traite aucun autre raccourci clavier.
+    return;
+  }
+
+
+  // ----------------------------------------------------------
+  // JEU NORMAL
+  // ----------------------------------------------------------
 
   game.keys[key] = true;
 
@@ -139,43 +176,17 @@ document.addEventListener("keydown", event => {
   }
 
 
-  // Interaction
+  // E = interaction
 
   if (key === "e") {
 
-    if (game.dialogue) {
-      nextDialogue();
-    } else {
-      interact();
-    }
-
-  }
-
-    // Échap :
-  // ferme immédiatement le dialogue
-  if (key === "escape") {
-
     event.preventDefault();
 
-    if (game.dialogue) {
-      closeDialogue();
-    }
+    interact();
 
   }
 
-
 });
-
-
-document.addEventListener("keyup", event => {
-
-  const key =
-    event.key.toLowerCase();
-
-  game.keys[key] = false;
-
-});
-
 
 // ------------------------------------------------------------
 // JOYSTICK MOBILE
