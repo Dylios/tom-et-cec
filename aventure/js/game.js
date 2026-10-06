@@ -80,7 +80,7 @@ const game = {
     x: 0,
     y: 0
   },
-
+  dialogue: null,
   interactionTarget: null
 };
 
