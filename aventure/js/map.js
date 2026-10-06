@@ -5,6 +5,29 @@
 
 const TILE_SIZE = 40;
 
+// ------------------------------------------------------------
+// SPRITES DES PERSONNAGES
+// ------------------------------------------------------------
+
+const CHARACTER_SPRITES = {
+  thomas: loadCharacterSprite("assets/characters/thomas_sheet.png"),
+  cecile: loadCharacterSprite("assets/characters/cecile_sheet.png"),
+  tiChat: loadCharacterSprite("assets/characters/ti-chat_sheet.png")
+};
+
+function loadCharacterSprite(src) {
+  const image = new Image();
+  image.src = src;
+  return image;
+}
+
+// Chaque case du spritesheet fait 48 x 64.
+// Pour l'instant on utilise la première frame "idle bas".
+const SPRITE_FRAME_WIDTH = 48;
+const SPRITE_FRAME_HEIGHT = 64;
+const SPRITE_DRAW_WIDTH = 32;
+const SPRITE_DRAW_HEIGHT = 40;
+
 const MAP = [
   "########################",
   "#BBBBB...........BBBBBB#",
@@ -30,16 +53,11 @@ const TILE_TYPES = {
   BOOK: "L"
 };
 
-
 // ------------------------------------------------------------
 // OBJETS DE LA MAP
 // ------------------------------------------------------------
 
 const MAP_OBJECTS = [
-
-  // ----------------------------------------------------------
-  // LIVRE CENTRAL
-  // ----------------------------------------------------------
 
   {
     id: "main-book",
@@ -48,11 +66,6 @@ const MAP_OBJECTS = [
     row: 7,
     interactive: true
   },
-
-
-  // ----------------------------------------------------------
-  // CÉCILE
-  // ----------------------------------------------------------
 
   {
     id: "cecile",
@@ -63,11 +76,6 @@ const MAP_OBJECTS = [
     interactive: true
   },
 
-
-  // ----------------------------------------------------------
-  // THOMAS
-  // ----------------------------------------------------------
-
   {
     id: "thomas",
     type: "npc",
@@ -77,11 +85,6 @@ const MAP_OBJECTS = [
     interactive: true
   },
 
-
-  // ----------------------------------------------------------
-  // TI CHAT
-  // ----------------------------------------------------------
-
   {
     id: "ti-chat",
     type: "npc",
@@ -90,9 +93,7 @@ const MAP_OBJECTS = [
     row: 9,
     interactive: true
   }
-
 ];
-
 
 // ------------------------------------------------------------
 // RÉCUPÉRER UNE CASE
@@ -110,9 +111,7 @@ function getTile(col, row) {
   }
 
   return MAP[row][col];
-
 }
-
 
 // ------------------------------------------------------------
 // CASE TRAVERSABLE
@@ -127,9 +126,7 @@ function isWalkable(col, row) {
     tile === TILE_TYPES.BOOK ||
     tile === TILE_TYPES.ARMCHAIR
   );
-
 }
-
 
 // ------------------------------------------------------------
 // POSITION D'UN OBJET
@@ -138,12 +135,15 @@ function isWalkable(col, row) {
 function getObjectPosition(object) {
 
   return {
-    x: object.col * TILE_SIZE + TILE_SIZE / 2,
-    y: object.row * TILE_SIZE + TILE_SIZE / 2
+    x:
+      object.col * TILE_SIZE +
+      TILE_SIZE / 2,
+
+    y:
+      object.row * TILE_SIZE +
+      TILE_SIZE / 2
   };
-
 }
-
 
 // ------------------------------------------------------------
 // DESSIN DE LA MAP
@@ -163,11 +163,14 @@ function drawMap(ctx) {
       col++
     ) {
 
-      const tile = MAP[row][col];
+      const tile =
+        MAP[row][col];
 
-      const x = col * TILE_SIZE;
-      const y = row * TILE_SIZE;
+      const x =
+        col * TILE_SIZE;
 
+      const y =
+        row * TILE_SIZE;
 
       drawFloorTile(
         ctx,
@@ -175,68 +178,62 @@ function drawMap(ctx) {
         y
       );
 
-
-      if (tile === TILE_TYPES.WALL) {
-
+      if (
+        tile === TILE_TYPES.WALL
+      ) {
         drawWall(
           ctx,
           x,
           y
         );
-
       }
 
-
-      if (tile === TILE_TYPES.BOOKSHELF) {
-
+      if (
+        tile === TILE_TYPES.BOOKSHELF
+      ) {
         drawBookshelf(
           ctx,
           x,
           y
         );
-
       }
 
-
-      if (tile === TILE_TYPES.TABLE) {
-
+      if (
+        tile === TILE_TYPES.TABLE
+      ) {
         drawTable(
           ctx,
           x,
           y
         );
-
       }
 
-
-      if (tile === TILE_TYPES.ARMCHAIR) {
-
+      if (
+        tile === TILE_TYPES.ARMCHAIR
+      ) {
         drawArmchair(
           ctx,
           x,
           y
         );
-
       }
 
-
-      if (tile === TILE_TYPES.BOOK) {
-
+      if (
+        tile === TILE_TYPES.BOOK
+      ) {
         drawBook(
           ctx,
           x,
           y
         );
-
       }
-
     }
-
   }
-drawAmbientLight(ctx);
-drawNPCs(ctx);
-}
 
+  drawAmbientLight(ctx);
+
+  drawNPCs(ctx);
+}
 
 // ------------------------------------------------------------
 // SOL
@@ -244,8 +241,8 @@ drawNPCs(ctx);
 
 function drawFloorTile(ctx, x, y) {
 
-  // Base du parquet
   ctx.fillStyle = "#514337";
+
   ctx.fillRect(
     x,
     y,
@@ -253,22 +250,37 @@ function drawFloorTile(ctx, x, y) {
     TILE_SIZE
   );
 
-  // Lames du parquet
-  ctx.strokeStyle = "rgba(30, 22, 17, .25)";
+  ctx.strokeStyle =
+    "rgba(30,22,17,.25)";
+
   ctx.lineWidth = 1;
 
   ctx.beginPath();
 
-  ctx.moveTo(x, y + 13);
-  ctx.lineTo(x + TILE_SIZE, y + 13);
+  ctx.moveTo(
+    x,
+    y + 13
+  );
 
-  ctx.moveTo(x, y + 27);
-  ctx.lineTo(x + TILE_SIZE, y + 27);
+  ctx.lineTo(
+    x + TILE_SIZE,
+    y + 13
+  );
+
+  ctx.moveTo(
+    x,
+    y + 27
+  );
+
+  ctx.lineTo(
+    x + TILE_SIZE,
+    y + 27
+  );
 
   ctx.stroke();
 
-  // Variation légère entre les lames
-  ctx.fillStyle = "rgba(255,255,255,.025)";
+  ctx.fillStyle =
+    "rgba(255,255,255,.025)";
 
   ctx.fillRect(
     x + 2,
@@ -276,7 +288,6 @@ function drawFloorTile(ctx, x, y) {
     TILE_SIZE - 4,
     4
   );
-
 }
 
 // ------------------------------------------------------------
@@ -285,7 +296,6 @@ function drawFloorTile(ctx, x, y) {
 
 function drawWall(ctx, x, y) {
 
-  // Bois sombre
   ctx.fillStyle = "#241a15";
 
   ctx.fillRect(
@@ -295,7 +305,6 @@ function drawWall(ctx, x, y) {
     TILE_SIZE
   );
 
-  // Panneau intérieur
   ctx.fillStyle = "#33251d";
 
   ctx.fillRect(
@@ -305,7 +314,6 @@ function drawWall(ctx, x, y) {
     TILE_SIZE - 8
   );
 
-  // Ligne de moulure
   ctx.strokeStyle = "#624733";
 
   ctx.strokeRect(
@@ -315,8 +323,8 @@ function drawWall(ctx, x, y) {
     TILE_SIZE - 11
   );
 
-  // Ombre supérieure
-  ctx.fillStyle = "rgba(0,0,0,.25)";
+  ctx.fillStyle =
+    "rgba(0,0,0,.25)";
 
   ctx.fillRect(
     x,
@@ -324,7 +332,6 @@ function drawWall(ctx, x, y) {
     TILE_SIZE,
     5
   );
-
 }
 
 // ------------------------------------------------------------
@@ -333,7 +340,6 @@ function drawWall(ctx, x, y) {
 
 function drawBookshelf(ctx, x, y) {
 
-  // Structure en bois
   ctx.fillStyle = "#382319";
 
   ctx.fillRect(
@@ -343,8 +349,6 @@ function drawBookshelf(ctx, x, y) {
     TILE_SIZE - 2
   );
 
-
-  // Fond sombre
   ctx.fillStyle = "#1d1511";
 
   ctx.fillRect(
@@ -353,9 +357,6 @@ function drawBookshelf(ctx, x, y) {
     TILE_SIZE - 12,
     TILE_SIZE - 8
   );
-
-
-  // Trois étagères
 
   ctx.fillStyle = "#60432e";
 
@@ -380,8 +381,6 @@ function drawBookshelf(ctx, x, y) {
     3
   );
 
-
-  // Livres
   const books = [
     "#7c4f3c",
     "#49634f",
@@ -391,21 +390,36 @@ function drawBookshelf(ctx, x, y) {
     "#5d4938"
   ];
 
-
   const positions = [
-    8, 12, 16, 20, 24
+    8,
+    12,
+    16,
+    20,
+    24
   ];
 
+  for (
+    let row = 0;
+    row < 3;
+    row++
+  ) {
 
-  for (let row = 0; row < 3; row++) {
-
-    for (let i = 0; i < positions.length; i++) {
+    for (
+      let i = 0;
+      i < positions.length;
+      i++
+    ) {
 
       ctx.fillStyle =
-        books[(i + row) % books.length];
+        books[
+          (i + row) %
+          books.length
+        ];
 
       const height =
-        6 + ((i + row) % 3) * 2;
+        6 +
+        ((i + row) % 3) *
+        2;
 
       ctx.fillRect(
         x + positions[i],
@@ -413,13 +427,9 @@ function drawBookshelf(ctx, x, y) {
         3,
         height
       );
-
     }
-
   }
 
-
-  // Montants verticaux
   ctx.fillStyle = "#4a3022";
 
   ctx.fillRect(
@@ -435,9 +445,7 @@ function drawBookshelf(ctx, x, y) {
     4,
     TILE_SIZE - 2
   );
-
 }
-
 
 // ------------------------------------------------------------
 // TABLE
@@ -445,8 +453,8 @@ function drawBookshelf(ctx, x, y) {
 
 function drawTable(ctx, x, y) {
 
-  // Ombre
-  ctx.fillStyle = "rgba(0,0,0,.3)";
+  ctx.fillStyle =
+    "rgba(0,0,0,.3)";
 
   ctx.fillRect(
     x + 2,
@@ -455,8 +463,6 @@ function drawTable(ctx, x, y) {
     13
   );
 
-
-  // Plateau
   ctx.fillStyle = "#4a3020";
 
   ctx.fillRect(
@@ -466,8 +472,6 @@ function drawTable(ctx, x, y) {
     20
   );
 
-
-  // Dessus
   ctx.fillStyle = "#65442d";
 
   ctx.fillRect(
@@ -477,8 +481,6 @@ function drawTable(ctx, x, y) {
     12
   );
 
-
-  // Bord du plateau
   ctx.strokeStyle = "#8a6040";
 
   ctx.strokeRect(
@@ -487,9 +489,7 @@ function drawTable(ctx, x, y) {
     TILE_SIZE - 10,
     12
   );
-
 }
-
 
 // ------------------------------------------------------------
 // FAUTEUIL
@@ -497,8 +497,8 @@ function drawTable(ctx, x, y) {
 
 function drawArmchair(ctx, x, y) {
 
-  // Ombre
-  ctx.fillStyle = "rgba(0,0,0,.3)";
+  ctx.fillStyle =
+    "rgba(0,0,0,.3)";
 
   ctx.fillRect(
     x + 5,
@@ -507,8 +507,6 @@ function drawArmchair(ctx, x, y) {
     7
   );
 
-
-  // Dossier
   ctx.fillStyle = "#385669";
 
   ctx.fillRect(
@@ -518,8 +516,6 @@ function drawArmchair(ctx, x, y) {
     19
   );
 
-
-  // Assise
   ctx.fillStyle = "#496f82";
 
   ctx.fillRect(
@@ -529,8 +525,6 @@ function drawArmchair(ctx, x, y) {
     12
   );
 
-
-  // Accoudoirs
   ctx.fillStyle = "#294352";
 
   ctx.fillRect(
@@ -547,9 +541,8 @@ function drawArmchair(ctx, x, y) {
     16
   );
 
-
-  // Détail central
-  ctx.fillStyle = "rgba(255,255,255,.08)";
+  ctx.fillStyle =
+    "rgba(255,255,255,.08)";
 
   ctx.fillRect(
     x + 11,
@@ -557,9 +550,7 @@ function drawArmchair(ctx, x, y) {
     18,
     3
   );
-
 }
-
 
 // ------------------------------------------------------------
 // LIVRE
@@ -567,8 +558,8 @@ function drawArmchair(ctx, x, y) {
 
 function drawBook(ctx, x, y) {
 
-  // Ombre
-  ctx.fillStyle = "rgba(0,0,0,.3)";
+  ctx.fillStyle =
+    "rgba(0,0,0,.3)";
 
   ctx.fillRect(
     x + 8,
@@ -577,8 +568,6 @@ function drawBook(ctx, x, y) {
     5
   );
 
-
-  // Couverture
   ctx.fillStyle = "#315a72";
 
   ctx.fillRect(
@@ -588,8 +577,6 @@ function drawBook(ctx, x, y) {
     14
   );
 
-
-  // Pages
   ctx.fillStyle = "#e7dcc8";
 
   ctx.fillRect(
@@ -599,8 +586,6 @@ function drawBook(ctx, x, y) {
     10
   );
 
-
-  // Reliure
   ctx.fillStyle = "#a88a52";
 
   ctx.fillRect(
@@ -610,8 +595,6 @@ function drawBook(ctx, x, y) {
     14
   );
 
-
-  // Petit symbole
   ctx.fillStyle = "#a88a52";
 
   ctx.fillRect(
@@ -620,11 +603,219 @@ function drawBook(ctx, x, y) {
     5,
     4
   );
-
 }
 
 // ------------------------------------------------------------
-// AmbientLight
+// PNJ
+// ------------------------------------------------------------
+
+function drawNPCs(ctx) {
+
+  for (
+    const object of MAP_OBJECTS
+  ) {
+
+    if (
+      object.type !== "npc"
+    ) {
+      continue;
+    }
+
+    const character =
+      CHARACTERS[
+        object.characterId
+      ];
+
+    if (!character) {
+      continue;
+    }
+
+    const position =
+      getObjectPosition(object);
+
+    drawNPC(
+      ctx,
+      position.x,
+      position.y,
+      character,
+      object.characterId
+    );
+  }
+}
+
+// ------------------------------------------------------------
+// DESSIN D'UN PNJ
+// ------------------------------------------------------------
+
+function drawNPC(
+  ctx,
+  x,
+  y,
+  character,
+  characterId
+) {
+
+  const sprite =
+    CHARACTER_SPRITES[
+      characterId
+    ];
+
+  // Tant que l'image n'est pas chargée,
+  // on conserve l'ancien rendu.
+  if (
+    !sprite ||
+    !sprite.complete ||
+    sprite.naturalWidth === 0
+  ) {
+
+    drawFallbackNPC(
+      ctx,
+      x,
+      y,
+      character
+    );
+
+    return;
+  }
+
+  // Ombre
+  ctx.fillStyle =
+    "rgba(0,0,0,.35)";
+
+  ctx.fillRect(
+    x - 11,
+    y + 10,
+    22,
+    6
+  );
+
+  // Première frame : idle vers le bas
+  ctx.imageSmoothingEnabled = false;
+
+  ctx.drawImage(
+    sprite,
+    0,
+    0,
+    SPRITE_FRAME_WIDTH,
+    SPRITE_FRAME_HEIGHT,
+    x - SPRITE_DRAW_WIDTH / 2,
+    y - SPRITE_DRAW_HEIGHT + 6,
+    SPRITE_DRAW_WIDTH,
+    SPRITE_DRAW_HEIGHT
+  );
+}
+
+// ------------------------------------------------------------
+// ANCIEN RENDU DE SECOURS
+// ------------------------------------------------------------
+
+function drawFallbackNPC(
+  ctx,
+  x,
+  y,
+  character
+) {
+
+  ctx.fillStyle =
+    "rgba(0,0,0,.35)";
+
+  ctx.fillRect(
+    x - 10,
+    y + 10,
+    20,
+    6
+  );
+
+  ctx.fillStyle =
+    character.color;
+
+  ctx.fillRect(
+    x - 10,
+    y - 4,
+    20,
+    18
+  );
+
+  ctx.fillStyle =
+    "#c79b78";
+
+  ctx.fillRect(
+    x - 8,
+    y - 16,
+    16,
+    14
+  );
+
+  ctx.fillStyle =
+    "#29231f";
+
+  ctx.fillRect(
+    x - 8,
+    y - 17,
+    16,
+    5
+  );
+
+  if (
+    character.name === "Ti Chat"
+  ) {
+    drawCatEars(
+      ctx,
+      x,
+      y
+    );
+  }
+}
+
+function drawCatEars(
+  ctx,
+  x,
+  y
+) {
+
+  ctx.fillStyle = "#7d7065";
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    x - 8,
+    y - 14
+  );
+
+  ctx.lineTo(
+    x - 4,
+    y - 21
+  );
+
+  ctx.lineTo(
+    x - 1,
+    y - 14
+  );
+
+  ctx.fill();
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    x + 1,
+    y - 14
+  );
+
+  ctx.lineTo(
+    x + 5,
+    y - 21
+  );
+
+  ctx.lineTo(
+    x + 8,
+    y - 14
+  );
+
+  ctx.fill();
+}
+
+// ------------------------------------------------------------
+// LUMIÈRE AMBIANTE
 // ------------------------------------------------------------
 
 function drawAmbientLight(ctx) {
@@ -657,146 +848,4 @@ function drawAmbientLight(ctx) {
     canvas.width,
     canvas.height
   );
-
-}
-
-// ------------------------------------------------------------
-// PNJ
-// ------------------------------------------------------------
-
-function drawNPCs(ctx) {
-
-  for (const object of MAP_OBJECTS) {
-
-    if (object.type !== "npc") {
-      continue;
-    }
-
-    const character =
-      CHARACTERS[object.characterId];
-
-    if (!character) {
-      continue;
-    }
-
-    const position =
-      getObjectPosition(object);
-
-    drawNPC(
-      ctx,
-      position.x,
-      position.y,
-      character
-    );
-
-  }
-
-}
-
-
-// ------------------------------------------------------------
-// DESSIN D'UN PNJ
-// ------------------------------------------------------------
-
-function drawNPC(
-  ctx,
-  x,
-  y,
-  character
-) {
-
-  // Ombre
-
-  ctx.fillStyle =
-    "rgba(0,0,0,.35)";
-
-  ctx.fillRect(
-    x - 10,
-    y + 10,
-    20,
-    6
-  );
-
-
-  // Corps
-
-  ctx.fillStyle =
-    character.color;
-
-  ctx.fillRect(
-    x - 10,
-    y - 4,
-    20,
-    18
-  );
-
-
-  // Tête
-
-  ctx.fillStyle =
-    "#c79b78";
-
-  ctx.fillRect(
-    x - 8,
-    y - 16,
-    16,
-    14
-  );
-
-
-  // Cheveux
-
-  ctx.fillStyle =
-    "#29231f";
-
-  ctx.fillRect(
-    x - 8,
-    y - 17,
-    16,
-    5
-  );
-
-
-  // Petit indicateur selon le personnage
-
-  if (character.name === "Ti Chat") {
-
-    drawCatEars(
-      ctx,
-      x,
-      y
-    );
-
-  }
-
-  function drawCatEars(
-  ctx,
-  x,
-  y
-) {
-
-  ctx.fillStyle = "#7d7065";
-
-  // Oreille gauche
-
-  ctx.beginPath();
-
-  ctx.moveTo(x - 8, y - 14);
-  ctx.lineTo(x - 4, y - 21);
-  ctx.lineTo(x - 1, y - 14);
-
-  ctx.fill();
-
-
-  // Oreille droite
-
-  ctx.beginPath();
-
-  ctx.moveTo(x + 1, y - 14);
-  ctx.lineTo(x + 5, y - 21);
-  ctx.lineTo(x + 8, y - 14);
-
-  ctx.fill();
-
-}
 }
