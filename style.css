@@ -1084,6 +1084,9 @@ h1 span {
 .story-chapter p:last-child {
   margin-bottom: 0;
 }
+.story-chapter.proposal {
+  padding: 35px 0;
+}
 
 .story-aside {
   margin: 32px 0 !important;
