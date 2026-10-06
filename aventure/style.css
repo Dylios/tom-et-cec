@@ -220,9 +220,32 @@ body {
   align-items: center;
   justify-content: center;
 
-  flex-direction: column;
-
   background: #0d0d0b;
+}
+
+
+/* =========================================================
+   GLOBAL GAME CONTAINER
+========================================================= */
+
+/*
+   Ce conteneur regroupe :
+
+   - la zone de jeu
+   - les contrôles mobiles
+   - les indications de contrôle
+
+   L'ensemble peut donc être centré proprement
+   sur l'écran, notamment sur mobile.
+*/
+
+.game-container {
+  width: 100%;
+  max-width: 960px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 
@@ -353,12 +376,6 @@ body {
    MOBILE CONTROLS
 ========================================================= */
 
-/*
-   Par défaut, les contrôles mobiles sont cachés.
-   Ils seront affichés uniquement lorsque JavaScript
-   ajoute la classe .mobile-device au <body>.
-*/
-
 #mobile-controls {
   display: none;
 
@@ -485,9 +502,8 @@ body {
    DEVICE MODES
 ========================================================= */
 
-/*
-   DESKTOP
-*/
+
+/* ---------- DESKTOP ---------- */
 
 .desktop-device #mobile-controls {
   display: none;
@@ -498,9 +514,7 @@ body {
 }
 
 
-/*
-   MOBILE
-*/
+/* ---------- MOBILE ---------- */
 
 .mobile-device #mobile-controls {
   display: flex;
@@ -525,21 +539,41 @@ body {
 
 @media (max-width: 600px) {
 
+  /*
+     Le screen utilise flex pour centrer
+     le game-container verticalement.
+  */
+
   #game-screen {
+    align-items: center;
     justify-content: center;
-    align-item : center;
+
     padding: 0;
   }
 
 
   /*
-     La zone de jeu occupe uniquement sa place
-     naturelle. Les contrôles sont en dessous.
+     Le jeu + les contrôles forment maintenant
+     un seul bloc centré.
+  */
+
+  .game-container {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    justify-content: center;
+  }
+
+
+  /*
+     Zone de jeu
   */
 
   .game-wrapper {
     width: 100vw;
-
     max-width: none;
 
     box-shadow: none;
@@ -547,7 +581,7 @@ body {
 
 
   /*
-     Contrôles mobiles
+     Contrôles mobiles sous le jeu
   */
 
   #mobile-controls {
@@ -558,7 +592,7 @@ body {
 
 
   /*
-     Barre d'aide
+     Indications
   */
 
   .game-help {
@@ -598,27 +632,37 @@ body {
   .title-content h2 {
     font-size: 1.5rem;
   }
-
 }
 
 
 /* =========================================================
-   VERY SMALL PHONES
+   VERY SMALL PHONES / LANDSCAPE
 ========================================================= */
 
 @media (max-width: 600px) and (max-height: 500px) {
 
   #game-screen {
     justify-content: center;
+
+    padding: 0;
   }
+
+
+  .game-container {
+    max-height: 100vh;
+  }
+
 
   .game-wrapper {
     width: min(100vw, 850px);
   }
 
+
   #mobile-controls {
     padding-top: 6px;
+    padding-bottom: 2px;
   }
+
 
   .joystick {
     width: 75px;
@@ -630,6 +674,7 @@ body {
     height: 36px;
   }
 
+
   .action-button {
     width: 55px;
     height: 55px;
@@ -637,6 +682,10 @@ body {
     font-size: 1.4rem;
   }
 
+
+  .game-help {
+    padding-top: 4px;
+  }
 }
 
 
@@ -653,5 +702,4 @@ body {
   .game-button {
     transition: none;
   }
-
 }
