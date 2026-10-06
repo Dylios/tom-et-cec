@@ -464,21 +464,17 @@ body {
    MOBILE
 ========================= */
 
-@media (pointer: coarse) {
+.touch-device #mobile-controls {
+  display: block;
+}
 
-  #mobile-controls {
-    display: block;
-  }
+.touch-device .desktop-help,
+.touch-device .interaction-hint {
+  display: none;
+}
 
-  .desktop-help,
-  .interaction-hint {
-    display: none;
-  }
-
-  .mobile-help {
-    display: inline;
-  }
-
+.touch-device .mobile-help {
+  display: inline;
 }
 
 
