@@ -549,4 +549,306 @@ h1 span {
         display: none;
     }
 
+/* -------------------------------- */
+/* INTERNAL PAGES                   */
+/* -------------------------------- */
+
+.page {
+    width: min(1000px, calc(100% - 32px));
+
+    margin: 0 auto;
+}
+
+
+/* Navigation */
+
+.navigation {
+    min-height: 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 10px;
+
+    color: var(--paper);
+}
+
+
+.logo {
+    color: var(--paper);
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 28px;
+
+    text-decoration: none;
+}
+
+
+.nav-links {
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+}
+
+
+.nav-links a {
+    color: rgba(243, 236, 221, 0.75);
+
+    font-size: 10px;
+
+    font-weight: 500;
+
+    letter-spacing: 1px;
+
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--paper);
+}
+
+
+.nav-links .game-link {
+    color: #c8a96b;
+}
+
+
+/* Page header */
+
+.page-header {
+    margin: 50px 0 45px;
+
+    padding: 65px 30px;
+
+    text-align: center;
+
+    background: var(--paper);
+
+    border: 1px solid rgba(168, 138, 82, 0.6);
+}
+
+
+.page-eyebrow {
+    margin: 0 0 15px;
+
+    color: var(--sapphire);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 4px;
+}
+
+
+.page-header h1 {
+    font-size: clamp(52px, 8vw, 80px);
+
+    line-height: 1;
+}
+
+
+.page-header > p:last-child {
+    margin: 20px 0 0;
+
+    color: var(--wood-light);
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 21px;
+
+    font-style: italic;
+}
+
+
+/* Content */
+
+.page-content {
+    padding: 50px;
+
+    background: var(--paper);
+
+    border: 1px solid rgba(168, 138, 82, 0.45);
+}
+
+
+.story-placeholder {
+    max-width: 600px;
+
+    margin: 0 auto;
+
+    padding: 70px 30px;
+
+    text-align: center;
+
+    border: 1px solid rgba(168, 138, 82, 0.35);
+
+    background: rgba(255, 255, 255, 0.15);
+}
+
+
+.story-placeholder > span {
+    color: var(--gold);
+
+    font-size: 20px;
+}
+
+
+.story-placeholder h2 {
+    margin: 20px 0 10px;
+
+    color: var(--wood);
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 34px;
+
+    font-weight: 500;
+}
+
+
+.story-placeholder p {
+    margin: 0;
+
+    color: var(--wood-light);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+/* Information cards */
+
+.info-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px;
+}
+
+
+.info-card {
+    padding: 30px;
+
+    border: 1px solid rgba(112, 86, 66, 0.25);
+
+    background: rgba(255, 255, 255, 0.12);
+}
+
+
+.info-card > span {
+    font-size: 22px;
+}
+
+
+.info-card h2 {
+    margin: 12px 0 5px;
+
+    color: var(--wood);
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 28px;
+}
+
+
+.info-card p {
+    margin: 0;
+
+    color: var(--wood-light);
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* Footer */
+
+.page-footer {
+    padding: 35px 0 60px;
+
+    text-align: center;
+}
+
+
+.page-footer a {
+    color: var(--paper);
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+
+    text-decoration: none;
+
+    opacity: 0.8;
+}
+
+
+.page-footer a:hover {
+    opacity: 1;
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+    .navigation {
+        min-height: 70px;
+
+        align-items: flex-start;
+
+        padding-top: 20px;
+
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+
+    .nav-links {
+        width: 100%;
+
+        overflow-x: auto;
+
+        padding-bottom: 5px;
+
+        gap: 18px;
+    }
+
+
+    .nav-links a {
+        white-space: nowrap;
+    }
+
+
+    .page-header {
+        margin-top: 25px;
+
+        padding: 50px 20px;
+    }
+
+
+    .page-content {
+        padding: 25px;
+    }
+
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
 }
