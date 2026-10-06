@@ -1,10 +1,12 @@
-const startButton = document.getElementById("startButton");
+const openBook = document.getElementById("openBook");
+const contents = document.getElementById("contents");
 
-startButton.addEventListener("click", () => {
+openBook.addEventListener("click", () => {
 
-    alert(
-        "Bienvenue dans notre histoire.\n\n" +
-        "Le premier chapitre sera bientôt disponible..."
-    );
+    contents.classList.remove("hidden");
+
+    contents.scrollIntoView({
+        behavior: "smooth"
+    });
 
 });
