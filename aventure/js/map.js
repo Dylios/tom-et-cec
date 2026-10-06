@@ -678,31 +678,35 @@ function drawNPC(
     return;
   }
 
-  // Ombre
-  ctx.fillStyle =
-    "rgba(0,0,0,.35)";
+  // Ombre au niveau des pieds
+ctx.fillStyle =
+  "rgba(0,0,0,.35)";
 
-  ctx.fillRect(
-    x - 11,
-    y + 10,
-    22,
-    6
-  );
+ctx.fillRect(
+  x - 11,
+  y + 15,
+  22,
+  6
+);
 
-  // Première frame : idle vers le bas
-  ctx.imageSmoothingEnabled = false;
+// Première frame : idle vers le bas
+ctx.imageSmoothingEnabled = false;
 
-  ctx.drawImage(
-    sprite,
-    0,
-    0,
-    SPRITE_FRAME_WIDTH,
-    SPRITE_FRAME_HEIGHT,
-    x - SPRITE_DRAW_WIDTH / 2,
-    y - SPRITE_DRAW_HEIGHT + 6,
-    SPRITE_DRAW_WIDTH,
-    SPRITE_DRAW_HEIGHT
-  );
+ctx.drawImage(
+  sprite,
+  0,
+  0,
+  SPRITE_FRAME_WIDTH,
+  SPRITE_FRAME_HEIGHT,
+
+  // Le personnage est maintenant
+  // ancré par ses pieds
+  x - SPRITE_DRAW_WIDTH / 2,
+  y - SPRITE_DRAW_HEIGHT + 18,
+
+  SPRITE_DRAW_WIDTH,
+  SPRITE_DRAW_HEIGHT
+);
 }
 
 // ------------------------------------------------------------
