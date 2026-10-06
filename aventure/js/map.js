@@ -233,6 +233,7 @@ function drawMap(ctx) {
     }
 
   }
+drawAmbientLight(ctx);
 drawNPCs(ctx);
 }
 
@@ -241,14 +242,10 @@ drawNPCs(ctx);
 // SOL
 // ------------------------------------------------------------
 
-function drawFloorTile(
-  ctx,
-  x,
-  y
-) {
+function drawFloorTile(ctx, x, y) {
 
-  ctx.fillStyle = "#4b4035";
-
+  // Base du parquet
+  ctx.fillStyle = "#514337";
   ctx.fillRect(
     x,
     y,
@@ -256,30 +253,40 @@ function drawFloorTile(
     TILE_SIZE
   );
 
-  ctx.strokeStyle =
-    "rgba(30,25,20,.18)";
+  // Lames du parquet
+  ctx.strokeStyle = "rgba(30, 22, 17, .25)";
+  ctx.lineWidth = 1;
 
-  ctx.strokeRect(
-    x,
-    y,
-    TILE_SIZE,
-    TILE_SIZE
+  ctx.beginPath();
+
+  ctx.moveTo(x, y + 13);
+  ctx.lineTo(x + TILE_SIZE, y + 13);
+
+  ctx.moveTo(x, y + 27);
+  ctx.lineTo(x + TILE_SIZE, y + 27);
+
+  ctx.stroke();
+
+  // Variation légère entre les lames
+  ctx.fillStyle = "rgba(255,255,255,.025)";
+
+  ctx.fillRect(
+    x + 2,
+    y + 2,
+    TILE_SIZE - 4,
+    4
   );
 
 }
-
 
 // ------------------------------------------------------------
 // MUR
 // ------------------------------------------------------------
 
-function drawWall(
-  ctx,
-  x,
-  y
-) {
+function drawWall(ctx, x, y) {
 
-  ctx.fillStyle = "#211b17";
+  // Bois sombre
+  ctx.fillStyle = "#241a15";
 
   ctx.fillRect(
     x,
@@ -288,72 +295,146 @@ function drawWall(
     TILE_SIZE
   );
 
-  ctx.fillStyle = "#33271f";
+  // Panneau intérieur
+  ctx.fillStyle = "#33251d";
 
   ctx.fillRect(
-    x + 3,
-    y + 3,
-    TILE_SIZE - 6,
-    7
+    x + 4,
+    y + 5,
+    TILE_SIZE - 8,
+    TILE_SIZE - 8
+  );
+
+  // Ligne de moulure
+  ctx.strokeStyle = "#624733";
+
+  ctx.strokeRect(
+    x + 5,
+    y + 6,
+    TILE_SIZE - 10,
+    TILE_SIZE - 11
+  );
+
+  // Ombre supérieure
+  ctx.fillStyle = "rgba(0,0,0,.25)";
+
+  ctx.fillRect(
+    x,
+    y,
+    TILE_SIZE,
+    5
   );
 
 }
-
 
 // ------------------------------------------------------------
 // BIBLIOTHÈQUE
 // ------------------------------------------------------------
 
-function drawBookshelf(
-  ctx,
-  x,
-  y
-) {
+function drawBookshelf(ctx, x, y) {
 
-  ctx.fillStyle = "#3a2418";
+  // Structure en bois
+  ctx.fillStyle = "#382319";
 
   ctx.fillRect(
-    x + 3,
-    y + 2,
-    TILE_SIZE - 6,
-    TILE_SIZE - 4
-  );
-
-  ctx.fillStyle = "#1f1712";
-
-  ctx.fillRect(
-    x + 7,
-    y + 8,
-    TILE_SIZE - 14,
-    TILE_SIZE - 12
+    x + 2,
+    y + 1,
+    TILE_SIZE - 4,
+    TILE_SIZE - 2
   );
 
 
-  const colors = [
-    "#7d5540",
+  // Fond sombre
+  ctx.fillStyle = "#1d1511";
+
+  ctx.fillRect(
+    x + 6,
+    y + 6,
+    TILE_SIZE - 12,
+    TILE_SIZE - 8
+  );
+
+
+  // Trois étagères
+
+  ctx.fillStyle = "#60432e";
+
+  ctx.fillRect(
+    x + 5,
+    y + 10,
+    TILE_SIZE - 10,
+    3
+  );
+
+  ctx.fillRect(
+    x + 5,
+    y + 19,
+    TILE_SIZE - 10,
+    3
+  );
+
+  ctx.fillRect(
+    x + 5,
+    y + 28,
+    TILE_SIZE - 10,
+    3
+  );
+
+
+  // Livres
+  const books = [
+    "#7c4f3c",
     "#49634f",
     "#315a72",
-    "#a88a52"
+    "#a88a52",
+    "#70485a",
+    "#5d4938"
   ];
 
 
-  for (
-    let i = 0;
-    i < 5;
-    i++
-  ) {
+  const positions = [
+    8, 12, 16, 20, 24
+  ];
 
-    ctx.fillStyle =
-      colors[i % colors.length];
 
-    ctx.fillRect(
-      x + 9 + i * 5,
-      y + 11,
-      4,
-      18
-    );
+  for (let row = 0; row < 3; row++) {
+
+    for (let i = 0; i < positions.length; i++) {
+
+      ctx.fillStyle =
+        books[(i + row) % books.length];
+
+      const height =
+        6 + ((i + row) % 3) * 2;
+
+      ctx.fillRect(
+        x + positions[i],
+        y + 4 + row * 9,
+        3,
+        height
+      );
+
+    }
 
   }
+
+
+  // Montants verticaux
+  ctx.fillStyle = "#4a3022";
+
+  ctx.fillRect(
+    x + 3,
+    y + 1,
+    4,
+    TILE_SIZE - 2
+  );
+
+  ctx.fillRect(
+    x + TILE_SIZE - 7,
+    y + 1,
+    4,
+    TILE_SIZE - 2
+  );
 
 }
 
@@ -362,28 +443,49 @@ function drawBookshelf(
 // TABLE
 // ------------------------------------------------------------
 
-function drawTable(
-  ctx,
-  x,
-  y
-) {
+function drawTable(ctx, x, y) {
 
-  ctx.fillStyle = "#2d1d15";
+  // Ombre
+  ctx.fillStyle = "rgba(0,0,0,.3)";
+
+  ctx.fillRect(
+    x + 2,
+    y + 19,
+    TILE_SIZE - 4,
+    13
+  );
+
+
+  // Plateau
+  ctx.fillStyle = "#4a3020";
 
   ctx.fillRect(
     x + 3,
-    y + 9,
+    y + 7,
     TILE_SIZE - 6,
-    TILE_SIZE - 18
+    20
   );
 
-  ctx.fillStyle = "#543727";
+
+  // Dessus
+  ctx.fillStyle = "#65442d";
 
   ctx.fillRect(
     x + 5,
-    y + 11,
+    y + 9,
     TILE_SIZE - 10,
-    TILE_SIZE - 22
+    12
+  );
+
+
+  // Bord du plateau
+  ctx.strokeStyle = "#8a6040";
+
+  ctx.strokeRect(
+    x + 5,
+    y + 9,
+    TILE_SIZE - 10,
+    12
   );
 
 }
@@ -393,28 +495,67 @@ function drawTable(
 // FAUTEUIL
 // ------------------------------------------------------------
 
-function drawArmchair(
-  ctx,
-  x,
-  y
-) {
+function drawArmchair(ctx, x, y) {
 
-  ctx.fillStyle = "#315a72";
+  // Ombre
+  ctx.fillStyle = "rgba(0,0,0,.3)";
+
+  ctx.fillRect(
+    x + 5,
+    y + 23,
+    30,
+    7
+  );
+
+
+  // Dossier
+  ctx.fillStyle = "#385669";
 
   ctx.fillRect(
     x + 8,
-    y + 7,
-    TILE_SIZE - 16,
-    TILE_SIZE - 13
+    y + 4,
+    24,
+    19
   );
 
-  ctx.fillStyle = "#243f50";
+
+  // Assise
+  ctx.fillStyle = "#496f82";
+
+  ctx.fillRect(
+    x + 6,
+    y + 18,
+    28,
+    12
+  );
+
+
+  // Accoudoirs
+  ctx.fillStyle = "#294352";
+
+  ctx.fillRect(
+    x + 4,
+    y + 15,
+    6,
+    16
+  );
+
+  ctx.fillRect(
+    x + 30,
+    y + 15,
+    6,
+    16
+  );
+
+
+  // Détail central
+  ctx.fillStyle = "rgba(255,255,255,.08)";
 
   ctx.fillRect(
     x + 11,
-    y + 4,
-    TILE_SIZE - 22,
-    9
+    y + 8,
+    18,
+    3
   );
 
 }
@@ -424,28 +565,97 @@ function drawArmchair(
 // LIVRE
 // ------------------------------------------------------------
 
-function drawBook(
-  ctx,
-  x,
-  y
-) {
+function drawBook(ctx, x, y) {
 
-  ctx.fillStyle = "#a88a52";
+  // Ombre
+  ctx.fillStyle = "rgba(0,0,0,.3)";
 
   ctx.fillRect(
-    x + 11,
-    y + 12,
-    18,
-    13
+    x + 8,
+    y + 22,
+    25,
+    5
   );
 
+
+  // Couverture
+  ctx.fillStyle = "#315a72";
+
+  ctx.fillRect(
+    x + 9,
+    y + 10,
+    23,
+    14
+  );
+
+
+  // Pages
   ctx.fillStyle = "#e7dcc8";
 
   ctx.fillRect(
-    x + 13,
-    y + 14,
-    14,
-    9
+    x + 12,
+    y + 12,
+    18,
+    10
+  );
+
+
+  // Reliure
+  ctx.fillStyle = "#a88a52";
+
+  ctx.fillRect(
+    x + 9,
+    y + 10,
+    3,
+    14
+  );
+
+
+  // Petit symbole
+  ctx.fillStyle = "#a88a52";
+
+  ctx.fillRect(
+    x + 19,
+    y + 15,
+    5,
+    4
+  );
+
+}
+
+// ------------------------------------------------------------
+// AmbientLight
+// ------------------------------------------------------------
+
+function drawAmbientLight(ctx) {
+
+  const gradient =
+    ctx.createRadialGradient(
+      480,
+      270,
+      80,
+      480,
+      270,
+      520
+    );
+
+  gradient.addColorStop(
+    0,
+    "rgba(255,220,160,.08)"
+  );
+
+  gradient.addColorStop(
+    1,
+    "rgba(0,0,0,.28)"
+  );
+
+  ctx.fillStyle = gradient;
+
+  ctx.fillRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
   );
 
 }
