@@ -80,8 +80,9 @@ const game = {
     x: 0,
     y: 0
   },
-  dialogue: null,
-  interactionTarget: null
+
+  dialogue: null
+
 };
 
 
@@ -117,36 +118,40 @@ document.addEventListener("keydown", event => {
 
   const key = event.key.toLowerCase();
 
+
   // ----------------------------------------------------------
-  // DIALOGUE
+  // DIALOGUE OUVERT
   // ----------------------------------------------------------
 
   if (game.dialogue) {
 
-    // E = ligne suivante
+    // E = dialogue suivant
     if (key === "e") {
 
       event.preventDefault();
-      event.stopPropagation();
 
       nextDialogue();
 
       return;
+
     }
+
 
     // Échap = fermer le dialogue
     if (key === "escape") {
 
       event.preventDefault();
-      event.stopPropagation();
 
       closeDialogue();
 
       return;
+
     }
 
-    // Tant qu'un dialogue est ouvert,
-    // on ne traite aucun autre raccourci clavier.
+
+    // Si un dialogue est ouvert,
+    // les autres touches sont ignorées.
+
     return;
   }
 
@@ -187,6 +192,21 @@ document.addEventListener("keydown", event => {
   }
 
 });
+
+
+// ------------------------------------------------------------
+// KEYUP
+// ------------------------------------------------------------
+
+document.addEventListener("keyup", event => {
+
+  const key =
+    event.key.toLowerCase();
+
+  game.keys[key] = false;
+
+});
+
 
 // ------------------------------------------------------------
 // JOYSTICK MOBILE
@@ -363,11 +383,9 @@ function gameLoop() {
     return;
   }
 
-
   update();
 
   draw();
-
 
   requestAnimationFrame(gameLoop);
 
@@ -381,12 +399,10 @@ function gameLoop() {
 function update() {
 
   // Si un dialogue est ouvert,
-  // le joueur ne peut pas bouger.
+  // le joueur ne bouge pas.
 
   if (game.dialogue) {
-
     return;
-
   }
 
 
@@ -394,9 +410,9 @@ function update() {
   let dy = 0;
 
 
-  // -------------------------
+  // ----------------------------------------------------------
   // CLAVIER
-  // -------------------------
+  // ----------------------------------------------------------
 
   if (
     game.keys["arrowup"] ||
@@ -440,9 +456,9 @@ function update() {
   }
 
 
-  // -------------------------
+  // ----------------------------------------------------------
   // JOYSTICK
-  // -------------------------
+  // ----------------------------------------------------------
 
   if (
     Math.abs(game.touch.x) > 0.15 ||
@@ -455,9 +471,9 @@ function update() {
   }
 
 
-  // -------------------------
+  // ----------------------------------------------------------
   // NORMALISATION
-  // -------------------------
+  // ----------------------------------------------------------
 
   const magnitude =
     Math.sqrt(
@@ -474,16 +490,16 @@ function update() {
   }
 
 
-  // -------------------------
-  // DÉPLACEMENT
-  // -------------------------
+  // ----------------------------------------------------------
+  // DÉPLACEMENT DU JOUEUR
+  // ----------------------------------------------------------
 
   updatePlayer(dx, dy);
 
 
-  // -------------------------
-  // INTERACTION
-  // -------------------------
+  // ----------------------------------------------------------
+  // INTERACTIONS
+  // ----------------------------------------------------------
 
   updateInteraction();
 
@@ -496,8 +512,6 @@ function update() {
 
 function draw() {
 
-  // Efface le canvas
-
   ctx.clearRect(
     0,
     0,
@@ -506,22 +520,16 @@ function draw() {
   );
 
 
-  // Dessine la map
+  // Map
 
   drawMap(ctx);
 
 
-  // Dessine le joueur
+  // Joueur
 
   drawPlayer(ctx);
 
 
-  // Les PNJ seront ajoutés ici ensuite.
-
-  // Exemple futur :
-  //
-  // drawThomas(ctx);
-  // drawCecile(ctx);
-  // drawTiChat(ctx);
+  // Les PNJ seront ajoutés ici plus tard.
 
 }
