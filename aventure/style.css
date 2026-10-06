@@ -550,3 +550,8 @@ body {
   }
 
 }
+
+.touch-device .joystick,
+.touch-device .action-button {
+  display: block;
+}
