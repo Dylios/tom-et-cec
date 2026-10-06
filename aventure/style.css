@@ -1,0 +1,386 @@
+:root {
+  --night: #11110f;
+  --night-light: #1b1916;
+
+  --paper: #f3ecdd;
+  --paper-dark: #d8cbb5;
+
+  --wood: #3a2c24;
+  --wood-light: #705642;
+
+  --ink: #292722;
+
+  --sapphire: #315a72;
+  --forest: #49634f;
+  --gold: #a88a52;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: var(--night);
+  color: var(--paper);
+
+  font-family: "Inter", sans-serif;
+
+  overflow: hidden;
+}
+
+
+/* =========================
+   SCREENS
+========================= */
+
+.screen {
+  position: absolute;
+  inset: 0;
+
+  display: none;
+
+  width: 100%;
+  height: 100%;
+}
+
+.screen.active {
+  display: flex;
+}
+
+
+/* =========================
+   TITLE SCREEN
+========================= */
+
+#title-screen {
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #25221d 0%,
+      #151411 55%,
+      #0d0d0b 100%
+    );
+}
+
+.title-content {
+  width: min(800px, 90%);
+
+  text-align: center;
+}
+
+.title-small {
+  margin: 0 0 25px;
+
+  font-size: .7rem;
+  letter-spacing: .35em;
+
+  color: var(--gold);
+}
+
+.title-content h1 {
+  margin: 0;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(3rem, 9vw, 7rem);
+  font-weight: 500;
+
+  letter-spacing: .04em;
+
+  color: var(--paper);
+}
+
+.title-content h2 {
+  margin: 5px 0 35px;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  font-weight: 400;
+
+  font-style: italic;
+
+  color: var(--paper-dark);
+}
+
+.title-line {
+  width: 120px;
+  height: 1px;
+
+  margin: 0 auto 45px;
+
+  background: var(--gold);
+}
+
+.game-button {
+  padding: 13px 28px;
+
+  border: 1px solid rgba(168, 138, 82, .7);
+  background: transparent;
+
+  color: var(--paper);
+
+  font-family: "Inter", sans-serif;
+  font-size: .8rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    background .2s ease,
+    color .2s ease;
+}
+
+.game-button:hover {
+  background: var(--gold);
+  color: var(--night);
+}
+
+.title-footer {
+  margin-top: 80px;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1rem;
+
+  color: #777168;
+}
+
+
+/* =========================
+   PROLOGUE
+========================= */
+
+#prologue-screen {
+  align-items: center;
+  justify-content: center;
+
+  background: var(--night);
+}
+
+.prologue {
+  width: min(650px, 85%);
+
+  text-align: center;
+}
+
+.chapter-label {
+  margin: 0 0 25px;
+
+  font-size: .7rem;
+  letter-spacing: .3em;
+
+  color: var(--gold);
+}
+
+.prologue h2 {
+  margin: 0 0 45px;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400;
+
+  line-height: 1.05;
+}
+
+.prologue p {
+  margin: 8px 0;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.35rem;
+
+  color: var(--paper-dark);
+}
+
+.prologue .game-button {
+  margin-top: 45px;
+}
+
+
+/* =========================
+   GAME
+========================= */
+
+#game-screen {
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  background: #0d0d0b;
+}
+
+.game-wrapper {
+  position: relative;
+
+  width: min(960px, 96vw);
+  aspect-ratio: 16 / 9;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, .6);
+}
+
+#game-canvas {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+
+  background: #24231f;
+}
+
+
+/* =========================
+   DIALOGUE
+========================= */
+
+.dialogue {
+  position: absolute;
+
+  left: 5%;
+  right: 5%;
+  bottom: 4%;
+
+  min-height: 125px;
+
+  padding: 20px 25px 18px;
+
+  background: rgba(20, 18, 15, .94);
+
+  border: 1px solid rgba(168, 138, 82, .75);
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, .45);
+}
+
+.dialogue.hidden {
+  display: none;
+}
+
+.dialogue-name {
+  margin-bottom: 8px;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+
+  color: var(--gold);
+}
+
+.dialogue-text {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.15rem;
+
+  line-height: 1.45;
+
+  color: var(--paper);
+}
+
+.dialogue-continue {
+  position: absolute;
+
+  right: 14px;
+  bottom: 8px;
+
+  color: var(--gold);
+
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: .2;
+  }
+}
+
+
+/* =========================
+   INTERACTION
+========================= */
+
+.interaction-hint {
+  position: absolute;
+
+  bottom: 12px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding: 7px 13px;
+
+  background: rgba(20, 18, 15, .85);
+
+  font-size: .7rem;
+  letter-spacing: .05em;
+
+  color: var(--paper);
+}
+
+.interaction-hint.hidden {
+  display: none;
+}
+
+
+/* =========================
+   HELP
+========================= */
+
+.game-help {
+  width: min(960px, 96vw);
+
+  display: flex;
+  justify-content: space-between;
+
+  padding-top: 12px;
+
+  font-size: .65rem;
+  letter-spacing: .05em;
+
+  color: #68645c;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+  .title-content h1 {
+    font-size: 3rem;
+  }
+
+  .title-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .dialogue {
+    left: 3%;
+    right: 3%;
+    bottom: 3%;
+
+    min-height: 110px;
+
+    padding: 14px 16px;
+  }
+
+  .dialogue-text {
+    font-size: 1rem;
+  }
+
+  .game-help {
+    font-size: .55rem;
+  }
+
+}
