@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Expedition 2028 — Le Dernier Chapitre</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <main id="game">
+
+    <!-- =========================
+         ÉCRAN TITRE
+    ========================== -->
+
+    <section id="title-screen" class="screen active">
+
+      <div class="title-content">
+
+        <p class="title-small">UNE HISTOIRE À ÉCRIRE</p>
+
+        <h1>EXPEDITION 2028</h1>
+
+        <h2>Le Dernier Chapitre</h2>
+
+        <div class="title-line"></div>
+
+        <button id="start-button" class="game-button">
+          Commencer l'expédition
+        </button>
+
+        <p class="title-footer">
+          Thomas &amp; Cécile
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         PROLOGUE
+    ========================== -->
+
+    <section id="prologue-screen" class="screen">
+
+      <div class="prologue">
+
+        <p class="chapter-label">PROLOGUE</p>
+
+        <h2>Avant que l'histoire<br>ne commence...</h2>
+
+        <p>
+          Certaines histoires sont écrites à l'avance.
+        </p>
+
+        <p>
+          D'autres commencent par hasard.
+        </p>
+
+        <button id="enter-world-button" class="game-button">
+          Entrer dans l'histoire
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         JEU
+    ========================== -->
+
+    <section id="game-screen" class="screen">
+
+      <div class="game-wrapper">
+
+        <canvas id="game-canvas" width="960" height="540"></canvas>
+
+        <div id="dialogue-box" class="dialogue hidden">
+
+          <div id="dialogue-name" class="dialogue-name"></div>
+
+          <div id="dialogue-text" class="dialogue-text"></div>
+
+          <div class="dialogue-continue">
+            ▼
+          </div>
+
+        </div>
+
+        <div id="interaction-hint" class="interaction-hint hidden">
+          E — Interagir
+        </div>
+
+      </div>
+
+      <div class="game-help">
+        <span>↑ ↓ ← → / ZQSD</span>
+        <span>E : interagir</span>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="game.js"></script>
+
+</body>
+</html>
