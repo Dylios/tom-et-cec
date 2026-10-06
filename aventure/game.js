@@ -30,12 +30,14 @@ const joystickKnob = document.getElementById("joystick-knob");
 
 const actionButton = document.getElementById("action-button");
 
-const isTouchDevice =
-  navigator.maxTouchPoints > 0 ||
-  "ontouchstart" in window;
+const isMobile =
+  /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i
+    .test(navigator.userAgent);
 
-if (isTouchDevice) {
-  document.body.classList.add("touch-device");
+if (isMobile) {
+  document.body.classList.add("mobile-device");
+} else {
+  document.body.classList.add("desktop-device");
 }
 
 /* =========================================================
