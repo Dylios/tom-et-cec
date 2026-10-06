@@ -4,35 +4,135 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Notre histoire — Thomas & X</title>
+    <title>Notre histoire</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    >
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <main class="hero">
+    <main class="book">
 
-        <div class="book">
+        <header class="cover">
+
+            <div class="cover-decoration top">✦</div>
 
             <p class="eyebrow">UNE NOUVELLE HISTOIRE COMMENCE</p>
 
-            <h1>Thomas<br>&amp; Cécile</h1>
+            <h1>
+                Thomas
+                <span>&amp;</span>
+                X
+            </h1>
 
-            <div class="divider"></div>
+            <div class="ornament">
+                <span></span>
+                <b>✦</b>
+                <span></span>
+            </div>
 
-            <p class="date">2028 · BRETAGNE</p>
-
-            <p class="intro">
-                Vous avez reçu une invitation.<br>
-                Mais ceci n'est que le début de l'aventure...
+            <p class="subtitle">
+                Une histoire à écrire ensemble
             </p>
 
-            <button id="startButton">
-                ▶ Commencer l'aventure
+            <p class="date">
+                12 SEPTEMBRE 2027 · BRETAGNE
+            </p>
+
+            <button id="openBook" class="primary-button">
+                Ouvrir le livre
+                <span>→</span>
             </button>
 
-        </div>
+            <div class="cover-decoration bottom">✦</div>
+
+        </header>
+
+
+        <section id="contents" class="contents hidden">
+
+            <div class="section-heading">
+                <span>TABLE DES MATIÈRES</span>
+                <div></div>
+            </div>
+
+            <div class="chapters">
+
+                <a href="#" class="chapter">
+                    <span class="chapter-number">I</span>
+
+                    <div>
+                        <h2>Notre histoire</h2>
+                        <p>Les premiers chapitres de notre aventure.</p>
+                    </div>
+
+                    <span class="chapter-arrow">→</span>
+                </a>
+
+                <a href="#" class="chapter">
+                    <span class="chapter-number">II</span>
+
+                    <div>
+                        <h2>Le mariage</h2>
+                        <p>Tout ce qu'il faut savoir pour le grand jour.</p>
+                    </div>
+
+                    <span class="chapter-arrow">→</span>
+                </a>
+
+                <a href="#" class="chapter">
+                    <span class="chapter-number">III</span>
+
+                    <div>
+                        <h2>Le domaine</h2>
+                        <p>Découvrez le lieu où notre histoire continue.</p>
+                    </div>
+
+                    <span class="chapter-arrow">→</span>
+                </a>
+
+                <a href="#" class="chapter">
+                    <span class="chapter-number">IV</span>
+
+                    <div>
+                        <h2>Informations pratiques</h2>
+                        <p>Transport, hébergement, programme et FAQ.</p>
+                    </div>
+
+                    <span class="chapter-arrow">→</span>
+                </a>
+
+            </div>
+
+
+            <div class="game-entry">
+
+                <div class="game-icon">✦</div>
+
+                <div>
+                    <p class="game-label">UNE AVENTURE VOUS ATTEND</p>
+
+                    <h2>Entrer dans l'histoire</h2>
+
+                    <p>
+                        Un autre récit se cache entre les pages.
+                        Il faudra encore quelques chapitres avant de pouvoir l'ouvrir.
+                    </p>
+                </div>
+
+                <span class="locked">🔒</span>
+
+            </div>
+
+        </section>
 
     </main>
 
