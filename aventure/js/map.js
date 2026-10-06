@@ -679,8 +679,8 @@ function drawNPC(
   }
 
   // Ombre au niveau des pieds
-ctx.fillStyle =
-  "rgba(0,0,0,.35)";
+  //ctx.fillStyle =
+  //"rgba(0,0,0,.35)";
 
 ctx.fillRect(
   x - 11,
