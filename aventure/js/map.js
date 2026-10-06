@@ -233,7 +233,7 @@ function drawMap(ctx) {
     }
 
   }
-
+drawNPCs(ctx);
 }
 
 
@@ -448,4 +448,145 @@ function drawBook(
     9
   );
 
+}
+
+// ------------------------------------------------------------
+// PNJ
+// ------------------------------------------------------------
+
+function drawNPCs(ctx) {
+
+  for (const object of MAP_OBJECTS) {
+
+    if (object.type !== "npc") {
+      continue;
+    }
+
+    const character =
+      CHARACTERS[object.characterId];
+
+    if (!character) {
+      continue;
+    }
+
+    const position =
+      getObjectPosition(object);
+
+    drawNPC(
+      ctx,
+      position.x,
+      position.y,
+      character
+    );
+
+  }
+
+}
+
+
+// ------------------------------------------------------------
+// DESSIN D'UN PNJ
+// ------------------------------------------------------------
+
+function drawNPC(
+  ctx,
+  x,
+  y,
+  character
+) {
+
+  // Ombre
+
+  ctx.fillStyle =
+    "rgba(0,0,0,.35)";
+
+  ctx.fillRect(
+    x - 10,
+    y + 10,
+    20,
+    6
+  );
+
+
+  // Corps
+
+  ctx.fillStyle =
+    character.color;
+
+  ctx.fillRect(
+    x - 10,
+    y - 4,
+    20,
+    18
+  );
+
+
+  // Tête
+
+  ctx.fillStyle =
+    "#c79b78";
+
+  ctx.fillRect(
+    x - 8,
+    y - 16,
+    16,
+    14
+  );
+
+
+  // Cheveux
+
+  ctx.fillStyle =
+    "#29231f";
+
+  ctx.fillRect(
+    x - 8,
+    y - 17,
+    16,
+    5
+  );
+
+
+  // Petit indicateur selon le personnage
+
+  if (character.name === "Ti Chat") {
+
+    drawCatEars(
+      ctx,
+      x,
+      y
+    );
+
+  }
+
+  function drawCatEars(
+  ctx,
+  x,
+  y
+) {
+
+  ctx.fillStyle = "#7d7065";
+
+  // Oreille gauche
+
+  ctx.beginPath();
+
+  ctx.moveTo(x - 8, y - 14);
+  ctx.lineTo(x - 4, y - 21);
+  ctx.lineTo(x - 1, y - 14);
+
+  ctx.fill();
+
+
+  // Oreille droite
+
+  ctx.beginPath();
+
+  ctx.moveTo(x + 1, y - 14);
+  ctx.lineTo(x + 5, y - 21);
+  ctx.lineTo(x + 8, y - 14);
+
+  ctx.fill();
+
+}
 }
