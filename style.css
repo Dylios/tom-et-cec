@@ -1185,3 +1185,255 @@ h1 span {
   }
 
 }
+
+/* =========================================
+   MARIAGE
+   ========================================= */
+
+.wedding-intro {
+  width: min(680px, 86%);
+  margin: 0 auto;
+  padding: 20px 0 70px;
+  text-align: center;
+}
+
+.wedding-date {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 30px;
+  padding: 28px;
+  border-top: 1px solid rgba(58, 44, 36, 0.18);
+  border-bottom: 1px solid rgba(58, 44, 36, 0.18);
+}
+
+.wedding-date span {
+  font-family: "Inter", sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+
+.wedding-date strong {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.7rem;
+  font-weight: 500;
+  color: var(--wood);
+}
+
+.wedding-intro > p {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+
+/* SECTIONS */
+
+.wedding-section {
+  width: min(760px, 88%);
+  margin: 0 auto;
+  padding: 70px 0;
+  border-top: 1px solid rgba(58, 44, 36, 0.18);
+}
+
+.section-label {
+  margin-bottom: 15px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+
+.wedding-section > h2 {
+  margin: 0 0 45px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.7rem;
+  font-weight: 500;
+  color: var(--wood);
+}
+
+
+/* TIMELINE */
+
+.timeline {
+  position: relative;
+  padding-left: 90px;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 55px;
+  width: 1px;
+  background: rgba(58, 44, 36, 0.22);
+}
+
+.timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-bottom: 48px;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -39px;
+  top: 5px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--gold);
+  background: var(--paper);
+  transform: rotate(45deg);
+}
+
+.timeline-time {
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+}
+
+.timeline-content h3 {
+  margin: 0 0 10px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.9rem;
+  font-weight: 500;
+  color: var(--wood);
+}
+
+.timeline-content p {
+  margin: 0 0 10px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.timeline-note {
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--wood-light);
+}
+
+
+/* LENDEMAIN */
+
+.next-day-card {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 30px;
+  padding: 30px;
+  background: rgba(231, 220, 200, 0.35);
+  border: 1px solid rgba(58, 44, 36, 0.15);
+}
+
+.next-day-time {
+  font-family: "Inter", sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+}
+
+.next-day-card h3 {
+  margin: 0 0 10px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.9rem;
+  font-weight: 500;
+  color: var(--wood);
+}
+
+.next-day-card p {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+
+
+/* DRESS CODE */
+
+.dress-code {
+  text-align: center;
+}
+
+.dress-code .section-label {
+  text-align: center;
+}
+
+.dress-code > h2 {
+  margin-bottom: 20px;
+}
+
+.dress-code > p {
+  margin: 8px 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.3rem;
+}
+
+.dress-code > p:last-child {
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--wood-light);
+}
+
+
+/* INFOS À VENIR */
+
+.coming-soon {
+  padding-bottom: 30px;
+}
+
+.coming-soon > p:not(.story-aside) {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.2rem;
+  line-height: 1.7;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+  .wedding-intro {
+    width: 86%;
+  }
+
+  .wedding-section {
+    width: 86%;
+    padding: 55px 0;
+  }
+
+  .wedding-section > h2 {
+    font-size: 2.3rem;
+  }
+
+  .timeline {
+    padding-left: 65px;
+  }
+
+  .timeline::before {
+    left: 35px;
+  }
+
+  .timeline-item::before {
+    left: -24px;
+  }
+
+  .next-day-card {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+}
