@@ -143,9 +143,26 @@ document.addEventListener("keydown", event => {
 
   if (key === "e") {
 
-    interact();
+    if (game.dialogue) {
+      nextDialogue();
+    } else {
+      interact();
+    }
 
   }
+
+    // Échap :
+  // ferme immédiatement le dialogue
+  if (key === "escape") {
+
+    event.preventDefault();
+
+    if (game.dialogue) {
+      closeDialogue();
+    }
+
+  }
+
 
 });
 
