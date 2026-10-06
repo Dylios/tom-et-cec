@@ -74,7 +74,8 @@ const game = {
 
   running: false,
 
-  keys: {},
+  // Touches actuellement enfoncées
+  keys: new Set(),
 
   touch: {
     x: 0,
@@ -111,7 +112,7 @@ enterWorldButton.addEventListener("click", () => {
 
 
 // ------------------------------------------------------------
-// CONTRÔLES CLAVIER
+// CLAVIER
 // ------------------------------------------------------------
 
 document.addEventListener("keydown", event => {
@@ -120,12 +121,11 @@ document.addEventListener("keydown", event => {
 
 
   // ----------------------------------------------------------
-  // DIALOGUE OUVERT
+  // DIALOGUE
   // ----------------------------------------------------------
 
   if (game.dialogue) {
 
-    // E = dialogue suivant
     if (key === "e") {
 
       event.preventDefault();
@@ -137,7 +137,6 @@ document.addEventListener("keydown", event => {
     }
 
 
-    // Échap = fermer le dialogue
     if (key === "escape") {
 
       event.preventDefault();
@@ -149,9 +148,6 @@ document.addEventListener("keydown", event => {
     }
 
 
-    // Si un dialogue est ouvert,
-    // les autres touches sont ignorées.
-
     return;
   }
 
@@ -160,20 +156,19 @@ document.addEventListener("keydown", event => {
   // JEU NORMAL
   // ----------------------------------------------------------
 
-  game.keys[key] = true;
+  // On mémorise la touche.
+
+  game.keys.add(key);
 
 
-  // Empêche le navigateur de faire défiler
-  // la page avec les flèches ou espace.
+  // Empêcher le navigateur de faire défiler la page.
 
   if (
-    [
-      "arrowup",
-      "arrowdown",
-      "arrowleft",
-      "arrowright",
-      " "
-    ].includes(key)
+    key === "arrowup" ||
+    key === "arrowdown" ||
+    key === "arrowleft" ||
+    key === "arrowright" ||
+    key === " "
   ) {
 
     event.preventDefault();
@@ -203,9 +198,36 @@ document.addEventListener("keyup", event => {
   const key =
     event.key.toLowerCase();
 
-  game.keys[key] = false;
+  game.keys.delete(key);
 
 });
+
+
+// ------------------------------------------------------------
+// SÉCURITÉ : SI LE NAVIGATEUR PERD LE FOCUS
+// ------------------------------------------------------------
+
+window.addEventListener("blur", () => {
+
+  game.keys.clear();
+
+});
+
+
+// Quand l'utilisateur change d'onglet.
+
+document.addEventListener(
+  "visibilitychange",
+  () => {
+
+    if (document.hidden) {
+
+      game.keys.clear();
+
+    }
+
+  }
+);
 
 
 // ------------------------------------------------------------
@@ -215,33 +237,41 @@ document.addEventListener("keyup", event => {
 let joystickPointerId = null;
 
 
-joystick.addEventListener("pointerdown", event => {
+joystick.addEventListener(
+  "pointerdown",
+  event => {
 
-  event.preventDefault();
+    event.preventDefault();
 
-  joystickPointerId =
-    event.pointerId;
+    joystickPointerId =
+      event.pointerId;
 
-  joystick.setPointerCapture(
-    joystickPointerId
-  );
+    joystick.setPointerCapture(
+      joystickPointerId
+    );
 
-  updateJoystick(event);
+    updateJoystick(event);
 
-});
-
-
-joystick.addEventListener("pointermove", event => {
-
-  if (
-    event.pointerId !== joystickPointerId
-  ) {
-    return;
   }
+);
 
-  updateJoystick(event);
 
-});
+joystick.addEventListener(
+  "pointermove",
+  event => {
+
+    if (
+      event.pointerId !== joystickPointerId
+    ) {
+
+      return;
+
+    }
+
+    updateJoystick(event);
+
+  }
+);
 
 
 joystick.addEventListener(
@@ -325,7 +355,7 @@ function resetJoystick() {
 
 
 // ------------------------------------------------------------
-// BOUTON D'ACTION MOBILE
+// BOUTON MOBILE
 // ------------------------------------------------------------
 
 actionButton.addEventListener(
@@ -341,7 +371,7 @@ actionButton.addEventListener(
 
 
 // ------------------------------------------------------------
-// DIALOGUE SUR MOBILE
+// DIALOGUE MOBILE
 // ------------------------------------------------------------
 
 dialogueBox.addEventListener(
@@ -361,7 +391,7 @@ dialogueBox.addEventListener(
 
 
 // ------------------------------------------------------------
-// DÉMARRAGE DU JEU
+// DÉMARRAGE
 // ------------------------------------------------------------
 
 function startGame() {
@@ -380,12 +410,16 @@ function startGame() {
 function gameLoop() {
 
   if (!game.running) {
+
     return;
+
   }
+
 
   update();
 
   draw();
+
 
   requestAnimationFrame(gameLoop);
 
@@ -398,11 +432,12 @@ function gameLoop() {
 
 function update() {
 
-  // Si un dialogue est ouvert,
-  // le joueur ne bouge pas.
+  // Pas de déplacement pendant un dialogue.
 
   if (game.dialogue) {
+
     return;
+
   }
 
 
@@ -411,13 +446,13 @@ function update() {
 
 
   // ----------------------------------------------------------
-  // CLAVIER
+  // DÉPLACEMENT CLAVIER
   // ----------------------------------------------------------
 
   if (
-    game.keys["arrowup"] ||
-    game.keys["z"] ||
-    game.keys["w"]
+    game.keys.has("arrowup") ||
+    game.keys.has("z") ||
+    game.keys.has("w")
   ) {
 
     dy -= 1;
@@ -426,8 +461,8 @@ function update() {
 
 
   if (
-    game.keys["arrowdown"] ||
-    game.keys["s"]
+    game.keys.has("arrowdown") ||
+    game.keys.has("s")
   ) {
 
     dy += 1;
@@ -436,9 +471,9 @@ function update() {
 
 
   if (
-    game.keys["arrowleft"] ||
-    game.keys["q"] ||
-    game.keys["a"]
+    game.keys.has("arrowleft") ||
+    game.keys.has("q") ||
+    game.keys.has("a")
   ) {
 
     dx -= 1;
@@ -447,8 +482,8 @@ function update() {
 
 
   if (
-    game.keys["arrowright"] ||
-    game.keys["d"]
+    game.keys.has("arrowright") ||
+    game.keys.has("d")
   ) {
 
     dx += 1;
@@ -491,14 +526,14 @@ function update() {
 
 
   // ----------------------------------------------------------
-  // DÉPLACEMENT DU JOUEUR
+  // DÉPLACEMENT
   // ----------------------------------------------------------
 
   updatePlayer(dx, dy);
 
 
   // ----------------------------------------------------------
-  // INTERACTIONS
+  // INTERACTION
   // ----------------------------------------------------------
 
   updateInteraction();
@@ -520,16 +555,8 @@ function draw() {
   );
 
 
-  // Map
-
   drawMap(ctx);
 
-
-  // Joueur
-
   drawPlayer(ctx);
-
-
-  // Les PNJ seront ajoutés ici plus tard.
 
 }
