@@ -138,6 +138,39 @@ function interact() {
 
 }
 
+// ------------------------------------------------------------
+// INTERACTION AVEC UN PNJ
+// ------------------------------------------------------------
+
+function interactWithNPC(npc) {
+
+  if (game.dialogue) {
+    return;
+  }
+
+
+  const character =
+    CHARACTERS[npc.characterId];
+
+
+  if (!character) {
+
+    console.warn(
+      "Personnage introuvable :",
+      npc.characterId
+    );
+
+    return;
+
+  }
+
+
+  startDialogue(
+    character.dialogue
+  );
+
+}
+
 
 // ------------------------------------------------------------
 // LIVRE
