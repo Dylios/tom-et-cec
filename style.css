@@ -1100,6 +1100,10 @@ h1 span {
   text-align: left;
 }
 
+.proposal .story-aside {
+  margin-bottom: 10px !important;
+}
+
 .proposal-ending {
   margin-top: 45px;
   padding: 30px 20px;
