@@ -56,8 +56,11 @@ function showDialogue() {
 
 function nextDialogue() {
 
-  dialogueIndex++;
+  if (!game.dialogue) {
+    return;
+  }
 
+  dialogueIndex++;
 
   if (
     dialogueIndex >=
@@ -67,12 +70,9 @@ function nextDialogue() {
     closeDialogue();
 
     return;
-
   }
 
-
   showDialogue();
-
 }
 
 
@@ -86,8 +86,6 @@ function closeDialogue() {
 
   dialogueIndex = 0;
 
-  dialogueBox.classList.add(
-    "hidden"
-  );
+  dialogueBox.classList.add("hidden");
 
 }
