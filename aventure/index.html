@@ -79,85 +79,89 @@
 
 <section id="game-screen" class="screen">
 
-  <div class="game-wrapper">
+  <div class="game-container">
 
-    <canvas
-      id="game-canvas"
-      width="960"
-      height="540">
-    </canvas>
+    <div class="game-wrapper">
 
-    <div
-      id="dialogue-box"
-      class="dialogue hidden">
+      <canvas
+        id="game-canvas"
+        width="960"
+        height="540">
+      </canvas>
 
       <div
-        id="dialogue-name"
-        class="dialogue-name">
+        id="dialogue-box"
+        class="dialogue hidden">
+
+        <div
+          id="dialogue-name"
+          class="dialogue-name">
+        </div>
+
+        <div
+          id="dialogue-text"
+          class="dialogue-text">
+        </div>
+
+        <div class="dialogue-continue">
+          ▼
+        </div>
+
       </div>
 
       <div
-        id="dialogue-text"
-        class="dialogue-text">
-      </div>
-
-      <div class="dialogue-continue">
-        ▼
+        id="interaction-hint"
+        class="interaction-hint hidden">
+        E — Interagir
       </div>
 
     </div>
 
-    <div
-      id="interaction-hint"
-      class="interaction-hint hidden">
-      E — Interagir
-    </div>
 
-  </div>
+    <!-- CONTRÔLES MOBILES -->
 
-
-  <!-- CONTRÔLES MOBILES -->
-
-  <div id="mobile-controls">
-
-    <div
-      id="joystick"
-      class="joystick">
+    <div id="mobile-controls">
 
       <div
-        id="joystick-knob"
-        class="joystick-knob">
+        id="joystick"
+        class="joystick">
+
+        <div
+          id="joystick-knob"
+          class="joystick-knob">
+        </div>
+
       </div>
+
+      <button
+        id="action-button"
+        class="action-button"
+        type="button">
+        A
+      </button>
 
     </div>
 
-    <button
-      id="action-button"
-      class="action-button"
-      type="button">
-      A
-    </button>
 
-  </div>
+    <div class="game-help">
 
+      <span class="desktop-help">
+        ↑ ↓ ← → / ZQSD
+      </span>
 
-  <div class="game-help">
+      <span class="desktop-help">
+        E : interagir
+      </span>
 
-    <span class="desktop-help">
-      ↑ ↓ ← → / ZQSD
-    </span>
+      <span class="mobile-help">
+        Joystick : déplacer
+      </span>
 
-    <span class="desktop-help">
-      E : interagir
-    </span>
+      <span class="mobile-help">
+        A : interagir
+      </span>
 
-    <span class="mobile-help">
-      Joystick : déplacer
-    </span>
-
-    <span class="mobile-help">
-      A : interagir
-    </span>
+    </div>
 
   </div>
 
