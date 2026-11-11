@@ -2,15 +2,20 @@
     --paper: #f3ecdd;
     --paper-dark: #e7dcc8;
 
-    --wood: #3a2c24;
-    --wood-light: #705642;
+    /* Saphir profond : couleur principale */
+    --night: #0f2a4a;
+    --night-deep: #091b30;
+    --night-soft: #4a5b70;
 
     --ink: #292722;
 
-    --sapphire: #315a72;
+    --sapphire: #1f4a7a;
     --forest: #49634f;
 
+    /* Or : ornements, texte sur papier, dorure sur saphir */
     --gold: #a88a52;
+    --gold-text: #7d6232;
+    --gold-bright: #c8a96b;
 }
 
 
@@ -32,9 +37,9 @@ body {
     background:
         radial-gradient(
             circle at center,
-            #4a392e 0%,
-            var(--wood) 55%,
-            #261e1a 100%
+            #0c2139 0%,
+            var(--night-deep) 55%,
+            #06121f 100%
         );
 
     color: var(--ink);
@@ -80,17 +85,18 @@ body {
     background:
         linear-gradient(
             90deg,
-            rgba(120, 90, 55, 0.05),
-            transparent 20%,
-            transparent 80%,
-            rgba(120, 90, 55, 0.05)
+            rgba(0, 0, 0, 0.28),
+            rgba(255, 255, 255, 0.04) 5%,
+            transparent 12%,
+            transparent 88%,
+            rgba(0, 0, 0, 0.14)
         ),
-        var(--paper);
+        var(--night);
 
-    border: 1px solid rgba(168, 138, 82, 0.7);
+    border: 1px solid rgba(200, 169, 107, 0.8);
 
     box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.4);
+        0 25px 70px rgba(0, 0, 0, 0.55);
 }
 
 
@@ -101,14 +107,14 @@ body {
 
     inset: 18px;
 
-    border: 1px solid rgba(168, 138, 82, 0.35);
+    border: 1px solid rgba(200, 169, 107, 0.5);
 
     pointer-events: none;
 }
 
 
 .cover-decoration {
-    color: var(--gold);
+    color: var(--gold-text);
 
     font-size: 20px;
 }
@@ -144,7 +150,7 @@ body {
 h1 {
     margin: 0;
 
-    color: var(--wood);
+    color: var(--night);
 
     font-family: "Cormorant Garamond", serif;
 
@@ -161,7 +167,7 @@ h1 span {
 
     margin: 18px 0;
 
-    color: var(--gold);
+    color: var(--gold-text);
 
     font-size: 0.32em;
 
@@ -190,7 +196,7 @@ h1 span {
 
 
 .ornament b {
-    color: var(--gold);
+    color: var(--gold-text);
 
     font-size: 14px;
 
@@ -201,7 +207,7 @@ h1 span {
 .subtitle {
     margin: 0;
 
-    color: var(--wood);
+    color: var(--night);
 
     font-family: "Cormorant Garamond", serif;
 
@@ -214,7 +220,7 @@ h1 span {
 .date {
     margin-top: 25px;
 
-    color: var(--wood-light);
+    color: var(--night-soft);
 
     font-size: 11px;
     font-weight: 600;
@@ -236,9 +242,9 @@ h1 span {
     align-items: center;
     gap: 18px;
 
-    border: 1px solid var(--wood);
+    border: 1px solid var(--night);
 
-    background: var(--wood);
+    background: var(--night);
 
     color: var(--paper);
 
@@ -344,7 +350,7 @@ h1 span {
 
     text-decoration: none;
 
-    border-bottom: 1px solid rgba(112, 86, 66, 0.2);
+    border-bottom: 1px solid rgba(15, 42, 74, 0.2);
 
     transition:
         background 0.2s ease,
@@ -360,7 +366,7 @@ h1 span {
 
 
 .chapter-number {
-    color: var(--gold);
+    color: var(--gold-text);
 
     font-family: "Cormorant Garamond", serif;
 
@@ -371,7 +377,7 @@ h1 span {
 .chapter h2 {
     margin: 0 0 3px;
 
-    color: var(--wood);
+    color: var(--night);
 
     font-family: "Cormorant Garamond", serif;
 
@@ -384,7 +390,7 @@ h1 span {
 .chapter p {
     margin: 0;
 
-    color: var(--wood-light);
+    color: var(--night-soft);
 
     font-size: 12px;
 
@@ -453,7 +459,7 @@ h1 span {
 .game-entry h2 {
     margin: 0;
 
-    color: var(--wood);
+    color: var(--night);
 
     font-family: "Cormorant Garamond", serif;
 
@@ -464,7 +470,7 @@ h1 span {
 .game-entry p:last-of-type {
     margin: 7px 0 0;
 
-    color: var(--wood-light);
+    color: var(--night-soft);
 
     font-size: 12px;
 
@@ -571,14 +577,14 @@ h1 span {
   align-items: center;
   justify-content: space-between;
   padding: 22px 40px;
-  border-bottom: 1px solid rgba(58, 44, 36, 0.18);
+  border-bottom: 1px solid rgba(15, 42, 74, 0.18);
 }
 
 .logo {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--wood);
+  color: var(--night);
   text-decoration: none;
 }
 
@@ -591,7 +597,7 @@ h1 span {
 .nav-links a {
   font-family: "Inter", sans-serif;
   font-size: 0.82rem;
-  color: var(--wood-light);
+  color: var(--night-soft);
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -617,7 +623,7 @@ h1 span {
   font-family: "Inter", sans-serif;
   font-size: 0.72rem;
   letter-spacing: 0.22em;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .page-header h1 {
@@ -626,14 +632,14 @@ h1 span {
   font-size: clamp(3.5rem, 8vw, 6rem);
   font-weight: 500;
   line-height: 0.95;
-  color: var(--wood);
+  color: var(--night);
 }
 
 .page-header > p:last-child {
   margin-top: 25px;
   font-family: "Cormorant Garamond", serif;
   font-size: 1.25rem;
-  color: var(--wood-light);
+  color: var(--night-soft);
 }
 
 /* Contenu */
@@ -647,14 +653,14 @@ h1 span {
 .story-placeholder {
   padding: 55px 50px;
   text-align: center;
-  border-top: 1px solid rgba(58, 44, 36, 0.18);
-  border-bottom: 1px solid rgba(58, 44, 36, 0.18);
+  border-top: 1px solid rgba(15, 42, 74, 0.18);
+  border-bottom: 1px solid rgba(15, 42, 74, 0.18);
 }
 
 .story-placeholder > span {
   display: block;
   margin-bottom: 20px;
-  color: var(--gold);
+  color: var(--gold-text);
   font-size: 1.4rem;
 }
 
@@ -663,7 +669,7 @@ h1 span {
   font-family: "Cormorant Garamond", serif;
   font-size: 2.2rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 .story-placeholder p {
@@ -671,7 +677,7 @@ h1 span {
   font-family: "Inter", sans-serif;
   font-size: 0.95rem;
   line-height: 1.8;
-  color: var(--wood-light);
+  color: var(--night-soft);
 }
 
 /* Footer */
@@ -747,7 +753,7 @@ h1 span {
 .story-chapter {
   position: relative;
   padding: 70px 0;
-  border-top: 1px solid rgba(58, 44, 36, 0.18);
+  border-top: 1px solid rgba(15, 42, 74, 0.18);
 }
 
 .story-chapter:first-child {
@@ -759,7 +765,7 @@ h1 span {
   font-family: "Inter", sans-serif;
   font-size: 0.68rem;
   letter-spacing: 0.2em;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .story-chapter h2 {
@@ -768,7 +774,7 @@ h1 span {
   font-size: 2.7rem;
   font-weight: 500;
   line-height: 1.05;
-  color: var(--wood);
+  color: var(--night);
 }
 
 .story-chapter p {
@@ -794,7 +800,7 @@ h1 span {
   font-size: 0.82rem !important;
   font-style: italic;
   line-height: 1.7 !important;
-  color: var(--wood-light) !important;
+  color: var(--night-soft) !important;
 }
 
 .proposal {
@@ -809,12 +815,12 @@ h1 span {
   margin-top: 45px;
   padding: 30px 20px;
   text-align: center;
-  border-top: 1px solid rgba(58, 44, 36, 0.18);
-  border-bottom: 1px solid rgba(58, 44, 36, 0.18);
+  border-top: 1px solid rgba(15, 42, 74, 0.18);
+  border-bottom: 1px solid rgba(15, 42, 74, 0.18);
 }
 
 .proposal-ending span {
-  color: var(--gold);
+  color: var(--gold-text);
   font-size: 1.2rem;
 }
 
@@ -839,7 +845,7 @@ h1 span {
   gap: 5px;
   margin-top: 45px;
   padding: 25px;
-  border: 1px solid rgba(58, 44, 36, 0.2);
+  border: 1px solid rgba(15, 42, 74, 0.2);
   background: rgba(231, 220, 200, 0.35);
 }
 
@@ -847,14 +853,14 @@ h1 span {
   font-family: "Inter", sans-serif;
   font-size: 0.68rem;
   letter-spacing: 0.18em;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .next-chapter strong {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.7rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 
@@ -901,22 +907,22 @@ h1 span {
   gap: 8px;
   margin-bottom: 30px;
   padding: 28px;
-  border-top: 1px solid rgba(58, 44, 36, 0.18);
-  border-bottom: 1px solid rgba(58, 44, 36, 0.18);
+  border-top: 1px solid rgba(15, 42, 74, 0.18);
+  border-bottom: 1px solid rgba(15, 42, 74, 0.18);
 }
 
 .wedding-date span {
   font-family: "Inter", sans-serif;
   font-size: 0.7rem;
   letter-spacing: 0.2em;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .wedding-date strong {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.7rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 .wedding-intro > p {
@@ -933,7 +939,7 @@ h1 span {
   width: min(760px, 88%);
   margin: 0 auto;
   padding: 70px 0;
-  border-top: 1px solid rgba(58, 44, 36, 0.18);
+  border-top: 1px solid rgba(15, 42, 74, 0.18);
 }
 
 .section-label {
@@ -941,7 +947,7 @@ h1 span {
   font-family: "Inter", sans-serif;
   font-size: 0.68rem;
   letter-spacing: 0.2em;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .wedding-section > h2 {
@@ -949,7 +955,7 @@ h1 span {
   font-family: "Cormorant Garamond", serif;
   font-size: 2.7rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 
@@ -967,7 +973,7 @@ h1 span {
   bottom: 8px;
   left: 55px;
   width: 1px;
-  background: rgba(58, 44, 36, 0.22);
+  background: rgba(15, 42, 74, 0.22);
 }
 
 .timeline-item {
@@ -998,7 +1004,7 @@ h1 span {
   font-family: "Inter", sans-serif;
   font-size: 0.68rem;
   letter-spacing: 0.15em;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .timeline-content h3 {
@@ -1006,7 +1012,7 @@ h1 span {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.9rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 .timeline-content p {
@@ -1021,7 +1027,7 @@ h1 span {
   font-family: "Inter", sans-serif;
   font-size: 0.72rem;
   font-style: italic;
-  color: var(--wood-light);
+  color: var(--night-soft);
 }
 
 
@@ -1033,14 +1039,14 @@ h1 span {
   gap: 30px;
   padding: 30px;
   background: rgba(231, 220, 200, 0.35);
-  border: 1px solid rgba(58, 44, 36, 0.15);
+  border: 1px solid rgba(15, 42, 74, 0.15);
 }
 
 .next-day-time {
   font-family: "Inter", sans-serif;
   font-size: 0.7rem;
   letter-spacing: 0.12em;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .next-day-card h3 {
@@ -1048,7 +1054,7 @@ h1 span {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.9rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 .next-day-card p {
@@ -1083,7 +1089,7 @@ h1 span {
   font-family: "Inter", sans-serif;
   font-size: 0.8rem;
   font-style: italic;
-  color: var(--wood-light);
+  color: var(--night-soft);
 }
 
 
@@ -1149,14 +1155,14 @@ h1 span {
 .place-placeholder {
   padding: 70px 50px;
   text-align: center;
-  border-top: 1px solid rgba(58, 44, 36, 0.18);
-  border-bottom: 1px solid rgba(58, 44, 36, 0.18);
+  border-top: 1px solid rgba(15, 42, 74, 0.18);
+  border-bottom: 1px solid rgba(15, 42, 74, 0.18);
 }
 
 .place-symbol {
   display: block;
   margin-bottom: 25px;
-  color: var(--gold);
+  color: var(--gold-text);
   font-size: 1.4rem;
 }
 
@@ -1165,7 +1171,7 @@ h1 span {
   font-family: "Inter", sans-serif;
   font-size: 0.68rem;
   letter-spacing: 0.2em;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .place-placeholder h2 {
@@ -1174,7 +1180,7 @@ h1 span {
   font-size: 2.8rem;
   font-weight: 500;
   line-height: 1.1;
-  color: var(--wood);
+  color: var(--night);
 }
 
 .place-placeholder p:not(.place-label) {
@@ -1193,7 +1199,7 @@ h1 span {
   width: min(760px, 88%);
   margin: 0 auto;
   padding: 70px 0;
-  border-top: 1px solid rgba(58, 44, 36, 0.18);
+  border-top: 1px solid rgba(15, 42, 74, 0.18);
 }
 
 .place-section > h2 {
@@ -1201,7 +1207,7 @@ h1 span {
   font-family: "Cormorant Garamond", serif;
   font-size: 2.7rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 
@@ -1211,8 +1217,8 @@ h1 span {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
-  background: rgba(58, 44, 36, 0.18);
-  border: 1px solid rgba(58, 44, 36, 0.18);
+  background: rgba(15, 42, 74, 0.18);
+  border: 1px solid rgba(15, 42, 74, 0.18);
 }
 
 .place-card {
@@ -1227,7 +1233,7 @@ h1 span {
   font-family: "Inter", sans-serif;
   font-size: 0.65rem;
   letter-spacing: 0.15em;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .place-card h3 {
@@ -1235,7 +1241,7 @@ h1 span {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.8rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 .place-card p {
@@ -1272,20 +1278,20 @@ h1 span {
   align-items: center;
   gap: 15px;
   padding: 18px 20px;
-  border: 1px solid rgba(58, 44, 36, 0.15);
+  border: 1px solid rgba(15, 42, 74, 0.15);
 }
 
 .place-future span {
   font-family: "Inter", sans-serif;
   font-size: 0.65rem;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .place-future strong {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.25rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 
@@ -1327,7 +1333,7 @@ h1 span {
   width: min(760px, 88%);
   margin: 0 auto;
   padding: 70px 0;
-  border-top: 1px solid rgba(58, 44, 36, 0.18);
+  border-top: 1px solid rgba(15, 42, 74, 0.18);
 }
 
 .info-section > h2 {
@@ -1335,7 +1341,7 @@ h1 span {
   font-family: "Cormorant Garamond", serif;
   font-size: 2.7rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 
@@ -1345,8 +1351,8 @@ h1 span {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
-  background: rgba(58, 44, 36, 0.18);
-  border: 1px solid rgba(58, 44, 36, 0.18);
+  background: rgba(15, 42, 74, 0.18);
+  border: 1px solid rgba(15, 42, 74, 0.18);
 }
 
 .info-card {
@@ -1361,7 +1367,7 @@ h1 span {
   font-family: "Inter", sans-serif;
   font-size: 0.65rem;
   letter-spacing: 0.15em;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .info-card h3 {
@@ -1369,7 +1375,7 @@ h1 span {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.8rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 .info-card p {
@@ -1383,7 +1389,7 @@ h1 span {
   font-family: "Inter", sans-serif !important;
   font-size: 0.75rem !important;
   font-style: italic;
-  color: var(--wood-light);
+  color: var(--night-soft);
 }
 
 
@@ -1392,7 +1398,7 @@ h1 span {
 .travel-list {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid rgba(58, 44, 36, 0.15);
+  border-top: 1px solid rgba(15, 42, 74, 0.15);
 }
 
 .travel-item {
@@ -1400,7 +1406,7 @@ h1 span {
   grid-template-columns: 60px 1fr;
   gap: 20px;
   padding: 28px 0;
-  border-bottom: 1px solid rgba(58, 44, 36, 0.15);
+  border-bottom: 1px solid rgba(15, 42, 74, 0.15);
 }
 
 .travel-icon {
@@ -1413,7 +1419,7 @@ h1 span {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.8rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 .travel-item p {
@@ -1427,7 +1433,7 @@ h1 span {
   font-family: "Inter", sans-serif;
   font-size: 0.62rem;
   letter-spacing: 0.15em;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 
@@ -1437,13 +1443,13 @@ h1 span {
   padding: 45px;
   text-align: center;
   background: rgba(231, 220, 200, 0.35);
-  border: 1px solid rgba(58, 44, 36, 0.15);
+  border: 1px solid rgba(15, 42, 74, 0.15);
 }
 
 .sleep-symbol {
   display: block;
   margin-bottom: 15px;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .sleep-main h3 {
@@ -1451,7 +1457,7 @@ h1 span {
   font-family: "Cormorant Garamond", serif;
   font-size: 2rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 .sleep-main p {
@@ -1471,7 +1477,7 @@ h1 span {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.8rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 .hotel-placeholder {
@@ -1480,13 +1486,13 @@ h1 span {
   align-items: center;
   gap: 15px;
   padding: 18px 0;
-  border-top: 1px solid rgba(58, 44, 36, 0.15);
+  border-top: 1px solid rgba(15, 42, 74, 0.15);
 }
 
 .hotel-placeholder span {
   font-family: "Inter", sans-serif;
   font-size: 0.65rem;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .hotel-placeholder strong {
@@ -1498,7 +1504,7 @@ h1 span {
 .hotel-placeholder small {
   font-family: "Inter", sans-serif;
   font-size: 0.65rem;
-  color: var(--wood-light);
+  color: var(--night-soft);
 }
 
 
@@ -1508,8 +1514,8 @@ h1 span {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
-  background: rgba(58, 44, 36, 0.18);
-  border: 1px solid rgba(58, 44, 36, 0.18);
+  background: rgba(15, 42, 74, 0.18);
+  border: 1px solid rgba(15, 42, 74, 0.18);
 }
 
 .day-overview div {
@@ -1523,14 +1529,14 @@ h1 span {
   font-family: "Inter", sans-serif;
   font-size: 0.65rem;
   letter-spacing: 0.12em;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 .day-overview strong {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.45rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 .practical-details {
@@ -1544,7 +1550,7 @@ h1 span {
   display: flex;
   gap: 18px;
   padding: 25px;
-  border: 1px solid rgba(58, 44, 36, 0.15);
+  border: 1px solid rgba(15, 42, 74, 0.15);
 }
 
 .practical-detail > span {
@@ -1569,12 +1575,12 @@ h1 span {
    ========================================= */
 
 .faq-list {
-  border-top: 1px solid rgba(58, 44, 36, 0.15);
+  border-top: 1px solid rgba(15, 42, 74, 0.15);
 }
 
 .faq-item {
   padding: 30px 0;
-  border-bottom: 1px solid rgba(58, 44, 36, 0.15);
+  border-bottom: 1px solid rgba(15, 42, 74, 0.15);
 }
 
 .faq-item h3 {
@@ -1582,7 +1588,7 @@ h1 span {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.7rem;
   font-weight: 500;
-  color: var(--wood);
+  color: var(--night);
 }
 
 .faq-item p {
@@ -1671,7 +1677,7 @@ h1 span {
 /* Le lien vers le jeu sur l'accueil reprend le style d'un titre */
 
 .game-entry a {
-  color: var(--wood);
+  color: var(--night);
   font-family: "Cormorant Garamond", serif;
   font-size: 25px;
   font-weight: 600;
@@ -1707,9 +1713,9 @@ h1 span {
 
 .game-screen {
   padding: 60px 30px;
-  background: var(--wood);
+  background: var(--night);
   border: 1px solid var(--gold);
-  box-shadow: inset 0 0 0 6px var(--wood), inset 0 0 0 7px rgba(168, 138, 82, 0.45);
+  box-shadow: inset 0 0 0 6px var(--night), inset 0 0 0 7px rgba(168, 138, 82, 0.45);
   color: var(--paper);
 }
 
@@ -1762,4 +1768,50 @@ h1 span {
     padding: 45px 18px;
   }
 
+}
+
+
+/* =========================================
+   COUVERTURE SAPHIR À DORURE
+   ========================================= */
+
+.cover h1,
+.cover .subtitle {
+  color: var(--paper);
+}
+
+.cover h1 span,
+.cover .eyebrow,
+.cover .date,
+.cover .cover-decoration,
+.cover .ornament b {
+  color: var(--gold-bright);
+}
+
+.cover .ornament span {
+  background: var(--gold-bright);
+}
+
+.cover .primary-button {
+  border-color: var(--gold-bright);
+  background: transparent;
+  color: var(--gold-bright);
+}
+
+.cover .primary-button:hover {
+  background: var(--gold-bright);
+  color: var(--night);
+}
+
+/* Focus clavier visible partout */
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 3px;
+}
+
+.page a:focus-visible,
+.contents a:focus-visible {
+  outline-color: var(--sapphire);
 }
