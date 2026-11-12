@@ -393,6 +393,27 @@
     }
 
 
+    // Remonte en haut de la page (en douceur) avant de tourner.
+    function scrollToTop() {
+        return new Promise(function (resolve) {
+
+            if (window.scrollY < 2) { resolve(); return; }
+
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+
+            var t0 = performance.now();
+
+            (function wait() {
+                if (window.scrollY < 2 || performance.now() - t0 > 1500) {
+                    resolve();
+                } else {
+                    requestAnimationFrame(wait);
+                }
+            })();
+        });
+    }
+
+
     function turnTo(url) {
 
         if (turning) { return; }
@@ -412,10 +433,13 @@
 
         var f = getFrame(target.href);
 
-        f.ready.then(function (ok) {
+        // vers le sommaire : on remonte d'abord en haut de page
+        var up = to === 0 ? scrollToTop() : Promise.resolve();
+
+        Promise.all([f.ready, up]).then(function (results) {
 
             try {
-                if (!ok || !f.contentDocument || !sheetOf(f.contentDocument)) {
+                if (!results[0] || !f.contentDocument || !sheetOf(f.contentDocument)) {
                     throw new Error("page non prête");
                 }
 
