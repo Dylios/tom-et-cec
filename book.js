@@ -1,52 +1,406 @@
 /* ------------------------------------------------------------
    Le site comme un livre
-   - on tourne la page entre les chapitres (View Transitions)
    - la couverture s'ouvre sur le sommaire
+   - entre deux chapitres, la page se plie et se tourne vraiment :
+     elle est découpée en fines bandes articulées qui s'incurvent
    - on peut aussi glisser le doigt pour changer de chapitre
-   Tout est un « bonus » : sans ces API, les pages changent
-   simplement sans animation.
+   Tout est un « bonus » : si quelque chose échoue, on change
+   simplement de page sans animation.
    ------------------------------------------------------------ */
 
 (function () {
 
     var ORDER = ["index", "histoire", "mariage", "lieu", "infos", "aventure"];
 
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var inFrame = window.self !== window.top;
+
+
     function chapterOf(url) {
         var file = new URL(url, location.href).pathname.split("/").pop();
         var name = file.replace(".html", "") || "index";
         var i = ORDER.indexOf(name);
-        return i < 0 ? 0 : i;
+        return i < 0 ? -1 : i;
     }
 
-    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+    /* =========================================================
+       1. Couverture : ouvrir / refermer le livre
+       ========================================================= */
 
-    /* ---------- 1. Sens de la page qui se tourne ---------- */
+    var cover = document.querySelector(".cover");
+    var contents = document.getElementById("contents");
 
-    window.addEventListener("pagereveal", function (event) {
+    if (cover && contents) {
 
-        if (!event.viewTransition || !window.navigation || !navigation.activation) {
-            return;
+        var openBtn = document.getElementById("openBook");
+        var closeBtn = document.getElementById("closeBook");
+
+        var swap = function (showContents, animated) {
+
+            var incoming = showContents ? contents : cover;
+            var outgoing = showContents ? cover : contents;
+
+            window.scrollTo(0, 0);
+
+            incoming.classList.remove("hidden");
+
+            if (!animated || reduceMotion.matches) {
+                outgoing.classList.add("hidden");
+                return;
+            }
+
+            cover.classList.add(showContents ? "is-opening" : "is-closing");
+            contents.classList.add(showContents ? "is-revealed" : "is-covered");
+
+            cover.addEventListener("animationend", function done() {
+                cover.removeEventListener("animationend", done);
+                cover.classList.remove("is-opening", "is-closing");
+                contents.classList.remove("is-revealed", "is-covered");
+                outgoing.classList.add("hidden");
+            });
+        };
+
+        openBtn.addEventListener("click", function () { swap(true, true); });
+        closeBtn.addEventListener("click", function () { swap(false, true); });
+
+        // arrivée depuis un chapitre : directement sur le sommaire
+        if (location.hash === "#sommaire") {
+            swap(true, false);
         }
 
-        var from = navigation.activation.from;
-        var to = navigation.activation.entry;
-
-        if (!from || !to) {
-            return;
-        }
-
-        var root = document.documentElement;
-
-        root.dataset.turn = chapterOf(to.url) >= chapterOf(from.url) ? "forward" : "backward";
-
-        event.viewTransition.finished.finally(function () {
-            delete root.dataset.turn;
+        window.addEventListener("hashchange", function () {
+            if (location.hash === "#sommaire") { swap(true, false); }
         });
+    }
+
+
+    // Dans un cadre invisible (préchargement), on s'arrête là.
+    if (inFrame) { return; }
+
+
+    /* =========================================================
+       2. La page qui se tourne
+       ========================================================= */
+
+    var DURATION = 1150;       // ms
+    var MAX_TILT = 102;        // degrés : la page passe la verticale puis s'efface
+    var LAG = 0.38;            // retard de la reliure sur le bord libre (plus = plus de courbe)
+
+    var turning = false;
+    var frames = {};
+    var stage = null;
+
+
+    function sheetOf(doc) {
+        return doc.querySelector(".page") ||
+               doc.querySelector(".cover:not(.hidden)") ||
+               doc.querySelector(".contents:not(.hidden)");
+    }
+
+    function rootOf(doc) {
+        return doc.querySelector(".page") || doc.querySelector(".book");
+    }
+
+    function frameKey(url) {
+        var u = new URL(url, location.href);
+        return u.pathname + u.hash;
+    }
+
+    function viewportWidth() {
+        return document.documentElement.clientWidth;
+    }
+
+    function getFrame(url) {
+
+        var key = frameKey(url);
+
+        if (frames[key]) { return frames[key]; }
+
+        var f = document.createElement("iframe");
+
+        f.src = url;
+        f.tabIndex = -1;
+        f.title = "";
+        f.setAttribute("aria-hidden", "true");
+        f.setAttribute("scrolling", "no");
+        f.style.cssText =
+            "position:fixed;left:0;top:0;border:0;visibility:hidden;" +
+            "pointer-events:none;z-index:9998;";
+
+        sizeFrame(f);
+
+        f.ready = new Promise(function (resolve) {
+            f.addEventListener("load", function () { resolve(true); });
+            setTimeout(function () { resolve(false); }, 3000);
+        });
+
+        document.body.appendChild(f);
+        frames[key] = f;
+
+        return f;
+    }
+
+    function sizeFrame(f) {
+        f.style.width = viewportWidth() + "px";
+        f.style.height = window.innerHeight + "px";
+    }
+
+
+    // Précharge les pages voisines pour que le tour soit immédiat.
+    function preloadNeighbours() {
+        ["prev", "next"].forEach(function (rel) {
+            var a = document.querySelector('a[rel="' + rel + '"]');
+            if (a) { getFrame(a.href); }
+        });
+
+        var contentsEl = document.getElementById("contents");
+        if (contentsEl) { getFrame("histoire.html"); }
+    }
+
+    window.addEventListener("load", function () {
+        var run = window.requestIdleCallback || function (fn) { setTimeout(fn, 400); };
+        run(preloadNeighbours);
     });
 
 
-    /* ---------- 2. Glisser pour tourner la page ---------- */
+    function cleanUp() {
+        if (stage) { stage.remove(); stage = null; }
+        Object.keys(frames).forEach(function (k) {
+            frames[k].style.visibility = "hidden";
+        });
+        turning = false;
+    }
+
+    window.addEventListener("pageshow", function (e) {
+        if (e.persisted) { cleanUp(); }
+    });
+
+
+    function ease(u) {
+        return 0.5 - 0.5 * Math.cos(Math.PI * u);
+    }
+
+    function clamp(v, a, b) {
+        return Math.max(a, Math.min(b, v));
+    }
+
+
+    // Construit la feuille : une chaîne de bandes articulées.
+    function buildSheet(doc, scrollY) {
+
+        var sheet = sheetOf(doc);
+        var rect = sheet.getBoundingClientRect();
+
+        var cw = viewportWidth();
+        var count = clamp(Math.round(rect.width / 46), 9, 22);
+        var stripW = Math.floor(rect.width / count);
+
+        var clone = rootOf(doc).cloneNode(true);
+
+        [].forEach.call(clone.querySelectorAll("[id]"), function (n) { n.removeAttribute("id"); });
+        clone.setAttribute("aria-hidden", "true");
+
+        var strips = [];
+        var parent = stage;
+
+        for (var i = 0; i < count; i++) {
+
+            var isLast = i === count - 1;
+            var w = isLast ? rect.width - stripW * (count - 1) : stripW;
+
+            var s = document.createElement("div");
+            s.style.cssText =
+                "position:absolute;top:0;height:100%;transform-style:preserve-3d;" +
+                "transform-origin:0 50%;will-change:transform;" +
+                "left:" + (i === 0 ? rect.left : stripW) + "px;width:" + w + "px;";
+
+            // recto : la page telle qu'elle est
+            var face = document.createElement("div");
+            face.style.cssText =
+                "position:absolute;left:0;top:0;height:100%;overflow:hidden;" +
+                "backface-visibility:hidden;-webkit-backface-visibility:hidden;" +
+                "width:" + (w + (isLast ? 0 : 1)) + "px;";
+
+            var inner = document.createElement("div");
+            inner.style.cssText =
+                "position:absolute;top:" + (-scrollY) + "px;width:" + cw + "px;" +
+                "left:" + (-(rect.left + i * stripW)) + "px;" +
+                'font-family:"Inter",sans-serif;color:#292722;';
+
+            inner.appendChild(clone.cloneNode(true));
+            face.appendChild(inner);
+
+            var shadeFront = document.createElement("div");
+            shadeFront.style.cssText = "position:absolute;inset:0;";
+            face.appendChild(shadeFront);
+
+            // verso : du papier
+            var back = document.createElement("div");
+            back.style.cssText =
+                "position:absolute;left:0;top:0;height:100%;width:" + (w + (isLast ? 0 : 1)) + "px;" +
+                "backface-visibility:hidden;-webkit-backface-visibility:hidden;" +
+                "transform:rotateY(180deg);background:#e6dcc6;";
+
+            var shadeBack = document.createElement("div");
+            shadeBack.style.cssText = "position:absolute;inset:0;";
+            back.appendChild(shadeBack);
+
+            s.appendChild(face);
+            s.appendChild(back);
+            parent.appendChild(s);
+
+            strips.push({ el: s, front: shadeFront, back: shadeBack, backFace: back });
+            parent = s;
+        }
+
+        return { strips: strips, rect: rect };
+    }
+
+
+    function play(direction, destFrame, url) {
+
+        var cw = viewportWidth();
+
+        stage = document.createElement("div");
+        stage.setAttribute("aria-hidden", "true");
+        stage.style.cssText =
+            "position:fixed;left:0;top:0;height:" + window.innerHeight + "px;width:" + cw + "px;" +
+            "z-index:9999;overflow:hidden;pointer-events:none;perspective:3200px;";
+
+        sizeFrame(destFrame);
+
+        var source = direction > 0 ? document : destFrame.contentDocument;
+        var scrollY = direction > 0 ? window.scrollY : 0;
+
+        var built = buildSheet(source, scrollY);
+        var strips = built.strips;
+        var rect = built.rect;
+
+        stage.style.perspectiveOrigin = (rect.left + rect.width * 0.5) + "px 45%";
+
+        // ombre portée sur la page du dessous
+        var dim = document.createElement("div");
+        dim.style.cssText =
+            "position:absolute;top:0;height:100%;background:#050d18;opacity:0;" +
+            "left:" + rect.left + "px;width:" + rect.width + "px;";
+        stage.insertBefore(dim, stage.firstChild);
+
+        document.body.appendChild(stage);
+
+        if (direction > 0) { destFrame.style.visibility = "visible"; }
+
+        var count = strips.length;
+        var started = null;
+
+        function frame(now) {
+
+            if (started === null) { started = now; }
+
+            var t = clamp((now - started) / DURATION, 0, 1);
+
+            // p : 0 = page à plat sur le dessus, 1 = page entièrement tournée
+            var p = direction > 0 ? t : 1 - t;
+
+            var angles = [];
+
+            for (var i = 0; i < count; i++) {
+                var r = count === 1 ? 0 : i / (count - 1);    // 0 = reliure, 1 = bord libre
+                var lag = LAG * (1 - r);
+                var u = clamp((p - lag) / (1 - LAG), 0, 1);
+                angles.push(-MAX_TILT * ease(u));
+            }
+
+            function shadeFront(a) { return 0.55 * clamp(-a / 90, 0, 1); }
+            function shadeBack(a) { return 0.5 * (1 - clamp((-a - 90) / 60, 0, 1) * 0.7); }
+
+            function paint(el, fn, i) {
+                var left = fn(i > 0 ? (angles[i - 1] + angles[i]) / 2 : angles[i]);
+                var right = fn(i < count - 1 ? (angles[i] + angles[i + 1]) / 2 : angles[i]);
+                el.style.background =
+                    "linear-gradient(90deg,rgba(8,18,32," + left.toFixed(3) + "),rgba(8,18,32," + right.toFixed(3) + "))";
+            }
+
+            for (var j = 0; j < count; j++) {
+                var rel = angles[j] - (j > 0 ? angles[j - 1] : 0);
+                strips[j].el.style.transform = "rotateY(" + rel.toFixed(3) + "deg)";
+                paint(strips[j].front, shadeFront, j);
+                paint(strips[j].back, shadeBack, j);
+                strips[j].backFace.style.opacity = (1 - clamp((p - 0.42) / 0.30, 0, 1)).toFixed(3);
+            }
+
+            dim.style.opacity = (0.42 * (1 - p)).toFixed(3);
+
+            // la page s'efface en fin de course : la suivante est déjà dessous
+            stage.style.opacity = (1 - clamp((p - 0.74) / 0.24, 0, 1)).toFixed(3);
+
+            if (t < 1) {
+                requestAnimationFrame(frame);
+            } else {
+                location.href = url;
+            }
+        }
+
+        requestAnimationFrame(frame);
+    }
+
+
+    function turnTo(url) {
+
+        if (turning) { return; }
+
+        var target = new URL(url, location.href);
+        var from = chapterOf(location.href);
+        var to = chapterOf(target.href);
+
+        var samePage = target.pathname === location.pathname;
+
+        if (reduceMotion.matches || to < 0 || from < 0 || samePage) {
+            location.href = url;
+            return;
+        }
+
+        turning = true;
+
+        var f = getFrame(target.href);
+
+        f.ready.then(function (ok) {
+
+            try {
+                if (!ok || !f.contentDocument || !sheetOf(f.contentDocument)) {
+                    throw new Error("page non prête");
+                }
+
+                play(to > from ? 1 : -1, f, target.href);
+
+            } catch (err) {
+                location.href = url;
+            }
+        });
+    }
+
+
+    // Tous les liens entre chapitres tournent la page.
+    document.addEventListener("click", function (e) {
+
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) { return; }
+
+        var a = e.target.closest && e.target.closest("a[href]");
+
+        if (!a || a.target === "_blank" || a.hasAttribute("download")) { return; }
+
+        var u = new URL(a.href, location.href);
+
+        if (u.origin !== location.origin || chapterOf(u.href) < 0) { return; }
+
+        e.preventDefault();
+        turnTo(a.href);
+    });
+
+
+    /* =========================================================
+       3. Glisser pour tourner la page
+       ========================================================= */
 
     var startX = 0;
     var startY = 0;
@@ -55,12 +409,6 @@
     function link(rel) {
         var a = document.querySelector('a[rel="' + rel + '"]');
         return a ? a.href : null;
-    }
-
-    function go(url) {
-        if (url) {
-            location.href = url;
-        }
     }
 
     document.addEventListener("touchstart", function (e) {
@@ -72,6 +420,7 @@
     }, { passive: true });
 
     document.addEventListener("touchend", function (e) {
+
         if (!tracking) { return; }
         tracking = false;
 
@@ -80,63 +429,16 @@
 
         if (Math.abs(dx) < 90 || Math.abs(dx) < Math.abs(dy) * 2) { return; }
 
-        var onIndex = document.body.querySelector(".book");
-
-        if (onIndex) {
-            var contents = document.getElementById("contents");
-            if (dx < 0 && contents && !contents.classList.contains("hidden")) { go("histoire.html"); }
+        if (document.querySelector(".book")) {
+            var c = document.getElementById("contents");
+            if (dx < 0 && c && !c.classList.contains("hidden")) { turnTo("histoire.html"); }
             return;
         }
 
-        go(dx < 0 ? link("next") : link("prev"));
+        var next = dx < 0 ? link("next") : link("prev");
+
+        if (next) { turnTo(next); }
+
     }, { passive: true });
-
-
-    /* ---------- 3. Couverture : ouvrir / refermer le livre ---------- */
-
-    var cover = document.querySelector(".cover");
-    var contents = document.getElementById("contents");
-    var openBtn = document.getElementById("openBook");
-    var closeBtn = document.getElementById("closeBook");
-
-    if (!cover || !contents) { return; }
-
-    function swap(showContents, animated) {
-
-        var incoming = showContents ? contents : cover;
-        var outgoing = showContents ? cover : contents;
-
-        window.scrollTo(0, 0);
-
-        incoming.classList.remove("hidden");
-
-        if (!animated || reduceMotion.matches) {
-            outgoing.classList.add("hidden");
-            return;
-        }
-
-        // la couverture est toujours la page qui pivote
-        cover.classList.add(showContents ? "is-opening" : "is-closing");
-        contents.classList.add(showContents ? "is-revealed" : "is-covered");
-
-        cover.addEventListener("animationend", function done() {
-            cover.removeEventListener("animationend", done);
-            cover.classList.remove("is-opening", "is-closing");
-            contents.classList.remove("is-revealed", "is-covered");
-            outgoing.classList.add("hidden");
-        });
-    }
-
-    openBtn.addEventListener("click", function () { swap(true, true); });
-    closeBtn.addEventListener("click", function () { swap(false, true); });
-
-    // retour depuis un chapitre : on arrive directement sur le sommaire
-    if (location.hash === "#sommaire") {
-        swap(true, false);
-    }
-
-    window.addEventListener("hashchange", function () {
-        if (location.hash === "#sommaire") { swap(true, false); }
-    });
 
 })();
