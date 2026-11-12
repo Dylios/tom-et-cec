@@ -1041,41 +1041,15 @@ h1 span {
 .place-intro {
   width: min(760px, 88%);
   margin: 0 auto;
-  padding: 10px 0 70px;
+  padding: 10px 0 20px;
 }
 
 .place-placeholder {
-  padding: 70px 50px;
+  padding: 30px 20px 50px;
   text-align: center;
-  border-top: 1px solid rgba(15, 42, 74, 0.18);
-  border-bottom: 1px solid rgba(15, 42, 74, 0.18);
 }
 
-.place-symbol {
-  display: block;
-  margin-bottom: 25px;
-  color: var(--gold-text);
-  font-size: 1.4rem;
-}
-
-.place-label {
-  margin: 0 0 18px;
-  font-family: "Inter", sans-serif;
-  font-size: 0.68rem;
-  letter-spacing: 0.2em;
-  color: var(--gold-text);
-}
-
-.place-placeholder h2 {
-  margin: 0 0 25px;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 2.8rem;
-  font-weight: 500;
-  line-height: 1.1;
-  color: var(--night);
-}
-
-.place-placeholder p:not(.place-label) {
+.place-placeholder p {
   max-width: 600px;
   margin: 0 auto 18px;
   font-family: "Cormorant Garamond", serif;
@@ -1108,18 +1082,6 @@ h1 span {
 
 /* À VENIR */
 
-.place-coming {
-  padding-bottom: 30px;
-}
-
-.place-coming > p {
-  max-width: 650px;
-  margin: 0 0 40px;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.2rem;
-  line-height: 1.7;
-}
-
 
 /* MOBILE */
 
@@ -1132,10 +1094,6 @@ h1 span {
 
   .place-placeholder {
     padding: 50px 20px;
-  }
-
-  .place-placeholder h2 {
-    font-size: 2.3rem;
   }
 
 }
