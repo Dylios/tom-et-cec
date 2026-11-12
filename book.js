@@ -25,61 +25,6 @@
 
 
     /* =========================================================
-       1. Couverture : ouvrir / refermer le livre
-       ========================================================= */
-
-    var cover = document.querySelector(".cover");
-    var contents = document.getElementById("contents");
-
-    if (cover && contents) {
-
-        var openBtn = document.getElementById("openBook");
-        var closeBtn = document.getElementById("closeBook");
-
-        var swap = function (showContents, animated) {
-
-            var incoming = showContents ? contents : cover;
-            var outgoing = showContents ? cover : contents;
-
-            window.scrollTo(0, 0);
-
-            incoming.classList.remove("hidden");
-
-            if (!animated || reduceMotion.matches) {
-                outgoing.classList.add("hidden");
-                return;
-            }
-
-            cover.classList.add(showContents ? "is-opening" : "is-closing");
-            contents.classList.add(showContents ? "is-revealed" : "is-covered");
-
-            cover.addEventListener("animationend", function done() {
-                cover.removeEventListener("animationend", done);
-                cover.classList.remove("is-opening", "is-closing");
-                contents.classList.remove("is-revealed", "is-covered");
-                outgoing.classList.add("hidden");
-            });
-        };
-
-        openBtn.addEventListener("click", function () { swap(true, true); });
-        closeBtn.addEventListener("click", function () { swap(false, true); });
-
-        // arrivée depuis un chapitre : directement sur le sommaire
-        if (location.hash === "#sommaire") {
-            swap(true, false);
-        }
-
-        window.addEventListener("hashchange", function () {
-            if (location.hash === "#sommaire") { swap(true, false); }
-        });
-    }
-
-
-    // Dans un cadre invisible (préchargement), on s'arrête là.
-    if (inFrame) { return; }
-
-
-    /* =========================================================
        2. La page qui se tourne
        ========================================================= */
 
@@ -187,7 +132,7 @@
 
 
     // Construit la feuille : une chaîne de bandes articulées.
-    function buildSheet(doc, scrollY) {
+    function buildSheet(doc, scrollY, prepare) {
 
         var sheet = sheetOf(doc);
         var rect = sheet.getBoundingClientRect();
@@ -197,6 +142,8 @@
         var stripW = Math.floor(rect.width / count);
 
         var clone = rootOf(doc).cloneNode(true);
+
+        if (prepare) { prepare(clone); }
 
         [].forEach.call(clone.querySelectorAll("[id]"), function (n) { n.removeAttribute("id"); });
         clone.setAttribute("aria-hidden", "true");
@@ -258,7 +205,14 @@
     }
 
 
-    function play(direction, destFrame, url) {
+    // Joue le tour de page.
+    //   direction : 1 = la feuille se tourne (on découvre ce qu'il y a dessous)
+    //              -1 = la feuille revient se poser
+    //   o.doc, o.scrollY : d'où on copie la feuille
+    //   o.prepare(clone) : ajuste la copie (ex. cacher le sommaire)
+    //   o.start() : appelé une fois la feuille en place (révèle le dessous)
+    //   o.done() : appelé à la fin
+    function runTurn(direction, o) {
 
         var cw = viewportWidth();
 
@@ -268,12 +222,7 @@
             "position:fixed;left:0;top:0;height:" + window.innerHeight + "px;width:" + cw + "px;" +
             "z-index:9999;overflow:hidden;pointer-events:none;perspective:3200px;";
 
-        sizeFrame(destFrame);
-
-        var source = direction > 0 ? document : destFrame.contentDocument;
-        var scrollY = direction > 0 ? window.scrollY : 0;
-
-        var built = buildSheet(source, scrollY);
+        var built = buildSheet(o.doc, o.scrollY, o.prepare);
         var strips = built.strips;
         var rect = built.rect;
 
@@ -288,7 +237,7 @@
 
         document.body.appendChild(stage);
 
-        if (direction > 0) { destFrame.style.visibility = "visible"; }
+        if (o.start) { o.start(); }
 
         var count = strips.length;
         var started = null;
@@ -337,11 +286,29 @@
             if (t < 1) {
                 requestAnimationFrame(frame);
             } else {
-                location.href = url;
+                o.done();
             }
         }
 
         requestAnimationFrame(frame);
+    }
+
+
+    // Tour de page entre deux fichiers : on précharge la page voisine.
+    function play(direction, destFrame, url) {
+
+        sizeFrame(destFrame);
+
+        var forward = direction > 0;
+
+        runTurn(direction, {
+            doc: forward ? document : destFrame.contentDocument,
+            scrollY: forward ? window.scrollY : 0,
+            start: function () {
+                if (forward) { destFrame.style.visibility = "visible"; }
+            },
+            done: function () { location.href = url; }
+        });
     }
 
 
@@ -378,6 +345,93 @@
             }
         });
     }
+
+
+    /* =========================================================
+       Couverture : ouvrir / refermer le livre
+       ========================================================= */
+
+    var cover = document.querySelector(".cover");
+    var contents = document.getElementById("contents");
+
+    if (cover && contents) {
+
+        var showContents = function (show) {
+            contents.classList.toggle("hidden", !show);
+            cover.classList.toggle("hidden", show);
+        };
+
+        var swap = function (show, animated) {
+
+            window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+            if (!animated || inFrame || reduceMotion.matches || turning) {
+                showContents(show);
+                return;
+            }
+
+            turning = true;
+
+            var book = document.querySelector(".book");
+
+            // la copie ne garde que la couverture, quel que soit l'état
+            var onlyCover = function (clone) {
+                var c = clone.querySelector(".contents");
+                var v = clone.querySelector(".cover");
+                if (c) { c.classList.add("hidden"); }
+                if (v) { v.classList.remove("hidden"); v.style.visibility = ""; }
+            };
+
+            try {
+                if (!show) {
+                    // on mesure la couverture sans la montrer
+                    cover.style.visibility = "hidden";
+                    cover.classList.remove("hidden");
+                }
+
+                runTurn(show ? 1 : -1, {
+                    doc: document,
+                    scrollY: 0,
+                    prepare: onlyCover,
+                    start: function () {
+                        if (show) {
+                            showContents(true);
+                        } else {
+                            cover.classList.add("hidden");
+                            cover.style.visibility = "";
+                        }
+                    },
+                    done: function () {
+                        showContents(show);
+                        if (stage) { stage.remove(); stage = null; }
+                        turning = false;
+                    }
+                });
+
+            } catch (err) {
+                cover.style.visibility = "";
+                showContents(show);
+                if (stage) { stage.remove(); stage = null; }
+                turning = false;
+            }
+        };
+
+        document.getElementById("openBook").addEventListener("click", function () { swap(true, true); });
+        document.getElementById("closeBook").addEventListener("click", function () { swap(false, true); });
+
+        // arrivée depuis un chapitre : directement sur le sommaire
+        if (location.hash === "#sommaire") {
+            swap(true, false);
+        }
+
+        window.addEventListener("hashchange", function () {
+            if (location.hash === "#sommaire") { swap(true, false); }
+        });
+    }
+
+
+    // Dans un cadre invisible (préchargement), on s'arrête là.
+    if (inFrame) { return; }
 
 
     // Tous les liens entre chapitres tournent la page.

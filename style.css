@@ -8,6 +8,8 @@
     --night-soft: #4a5b70;
 
     /* Grain de papier : bruit généré en SVG, aucun fichier image */
+    --book-width: 800px;
+    --book-top: 40px;
     --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.36 0 0 0 0 0.26 0 0 0 0 0.13 0 0 0 0.9 -0.34'/%3E%3C/filter%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.025 0.05' numOctaves='3' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.33 0 0 0 0 0.18 0 0 0 0.7 -0.3'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url%28%23g%29' opacity='0.6'/%3E%3Crect width='320' height='320' filter='url%28%23f%29' opacity='0.22'/%3E%3C/svg%3E");
 
     --ink: #292722;
@@ -71,10 +73,10 @@ body {
 .cover {
     position: relative;
 
-    width: min(760px, calc(100% - 32px));
+    width: min(var(--book-width), calc(100% - 32px));
     min-height: 760px;
 
-    margin: 32px 0;
+    margin: var(--book-top) 0;
 
     padding: 70px 40px;
 
@@ -290,7 +292,7 @@ h1 span {
 /* -------------------------------- */
 
 .contents {
-    width: min(760px, calc(100% - 32px));
+    width: min(var(--book-width), calc(100% - 32px));
 
     margin-bottom: 60px;
 
@@ -483,8 +485,8 @@ h1 span {
    ========================================= */
 
 .page {
-  width: min(1100px, 92%);
-  margin: 40px auto;
+  width: min(var(--book-width), calc(100% - 32px));
+  margin: var(--book-top) auto;
   background: var(--paper);
   color: var(--ink);
   min-height: calc(100vh - 80px);
@@ -625,10 +627,12 @@ h1 span {
 
 @media (max-width: 700px) {
 
+  :root {
+    --book-top: 20px;
+  }
+
   .page {
-    width: 94%;
-    margin: 15px auto;
-    min-height: calc(100vh - 30px);
+    min-height: calc(100vh - 40px);
   }
 
   .navigation {
@@ -1600,44 +1604,7 @@ button:focus-visible {
 }
 
 .book > .contents {
-  margin-top: 32px;
-}
-
-.cover {
-  transform-origin: left center;
-  backface-visibility: hidden;
-}
-
-.cover.is-opening,
-.cover.is-closing {
-  z-index: 2;
-  will-change: transform;
-}
-
-.cover.is-opening {
-  animation: cover-open 1s cubic-bezier(0.55, 0.05, 0.25, 1) forwards;
-}
-
-.cover.is-closing {
-  animation: cover-open 1s cubic-bezier(0.55, 0.05, 0.25, 1) reverse forwards;
-}
-
-@keyframes cover-open {
-  from { transform: rotateY(0deg);    filter: brightness(1); }
-  to   { transform: rotateY(-105deg); filter: brightness(0.45); }
-}
-
-.contents.is-revealed {
-  animation: page-lit 1s ease-out both;
-}
-
-.contents.is-covered {
-  animation: page-lit 1s ease-out reverse both;
-}
-
-@keyframes page-lit {
-  from { filter: brightness(0.6); }
-  to   { filter: brightness(1); }
+  margin-top: var(--book-top);
 }
 
 .close-book {
