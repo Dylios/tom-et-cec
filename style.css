@@ -1550,3 +1550,30 @@ button:focus-visible {
   line-height: 1.3;
   color: var(--night);
 }
+
+
+/* Couverture : pintes qui trinquent (haut) et silhouette du manoir (bas) */
+
+.cover-decoration {
+  line-height: 0;
+}
+
+.cover-beers {
+  width: 92px;
+  height: auto;
+}
+
+.cover-manor {
+  width: min(330px, 100%);
+  height: auto;
+}
+
+.ornament {
+  width: 60px;
+}
+
+@media (max-width: 600px) {
+  .cover-beers {
+    width: 76px;
+  }
+}
