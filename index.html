@@ -78,44 +78,59 @@
             </button>
 
             <div class="cover-decoration bottom" aria-hidden="true">
-                <svg class="cover-manor" viewBox="0 0 340 96" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                    <!-- sol -->
-                    <path d="M2 82 C70 81 130 83 180 82 S290 81 338 82"/>
-                    <!-- arbre de gauche -->
-                    <path d="M26 82 V70"/>
-                    <path d="M26 70 C12 70 8 58 16 52 C16 42 32 40 36 49 C46 50 46 66 34 70"/>
-                    <!-- tourelle -->
-                    <path d="M62 82 V42 H88 V82"/>
-                    <path d="M58 42 L75 14 L92 42 Z"/>
-                    <path d="M75 14 V5 M75 6 H82"/>
-                    <path d="M71 66 V56 A4 4 0 0 1 79 56 V66 Z"/>
-                    <!-- corps principal -->
-                    <path d="M88 82 V46 H210 V82"/>
-                    <!-- toit -->
-                    <path d="M84 46 L102 24 H196 L214 46 Z"/>
-                    <path d="M96 33 H190 M90 40 H204" stroke-dasharray="6 5" opacity="0.7"/>
+                <svg class="cover-manor" viewBox="0 0 340 96" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                    <!-- sol, avec l'allée en gravier au centre -->
+                    <path d="M2 84 C60 83 130 85 194 84"/>
+                    <path d="M232 84 C272 85 310 83 338 84"/>
+                    <path d="M194 84 L182 95 M232 84 L246 95"/>
+                    <path d="M198 86.5 H228 M196 89 H230"/>
+
+                    <!-- bâtiment bas à gauche, ses arcades éclairées -->
+                    <path d="M16 84 V64 H82 V84"/>
+                    <path d="M11 64 L30 49 H84 L86 64 Z"/>
+                    <path d="M24 84 V74 A3 3 0 0 1 30 74 V84 M36 84 V74 A3 3 0 0 1 42 74 V84 M48 84 V74 A3 3 0 0 1 54 74 V84 M60 84 V74 A3 3 0 0 1 66 74 V84 M72 84 V74 A3 3 0 0 1 78 74 V84"/>
+                    <path d="M36 57 H78" stroke-dasharray="5 4" opacity="0.7"/>
+
+                    <!-- grand arbre nu derrière -->
+                    <path d="M96 66 V48"/>
+                    <path d="M96 52 L88 42 L83 32 M88 42 L82 41 M96 49 L102 38 L106 27 M102 38 L108 37 M96 56 L104 50 L112 47 M92 38 L89 28 M99 31 L97 20"/>
+
+                    <!-- château : ailes -->
+                    <path d="M148 84 V47 H192 M226 47 H264 V84"/>
+                    <path d="M144 47 L152 34 H192 M226 34 H256 L264 47"/>
+                    <path d="M156 38 H190 M228 38 H252" stroke-dasharray="5 4" opacity="0.7"/>
                     <!-- cheminées -->
-                    <path d="M120 24 V11 H129 V24 M118 11 H131"/>
-                    <path d="M170 24 V13 H179 V24 M168 13 H181"/>
-                    <!-- lucarnes -->
-                    <path d="M108 42 V35 L115 29 L122 35 V42"/>
-                    <path d="M141 42 V35 L148 29 L155 35 V42"/>
-                    <path d="M174 42 V35 L181 29 L188 35 V42"/>
-                    <!-- fenêtres et porte -->
-                    <path d="M100 56 H108 V69 H100 Z M104 56 V69 M100 62 H108"/>
-                    <path d="M122 56 H130 V69 H122 Z M126 56 V69 M122 62 H130"/>
-                    <path d="M167 56 H175 V69 H167 Z M171 56 V69 M167 62 H175"/>
-                    <path d="M189 56 H197 V69 H189 Z M193 56 V69 M189 62 H197"/>
-                    <path d="M141 82 V66 A8 8 0 0 1 157 66 V82"/>
-                    <!-- aile de droite -->
-                    <path d="M210 82 V62 H268 V82"/>
-                    <path d="M206 62 L239 40 L272 62 Z"/>
-                    <circle cx="239" cy="52" r="3.5"/>
-                    <path d="M222 70 H230 V80 M222 70 V80 M248 70 H256 V80 M248 70 V80"/>
-                    <!-- arbres de droite -->
-                    <path d="M296 82 V68"/>
-                    <path d="M296 68 C284 68 282 56 290 52 C292 44 304 44 306 52 C314 54 312 68 300 68"/>
-                    <path d="M322 82 V74 M322 74 C314 74 314 66 320 64 C324 60 330 64 328 70 C330 74 326 74 322 74"/>
+                    <path d="M165 34 V23 H172 V34 M163 23 H174"/>
+                    <path d="M238 34 V25 H245 V34 M236 25 H247"/>
+                    <!-- pavillon central -->
+                    <path d="M192 84 V40 H226 V84"/>
+                    <path d="M188 40 L197 23 H221 L230 40 Z"/>
+                    <path d="M204 40 V32 L209 26 L214 32 V40"/>
+                    <path d="M200 23 V15 H205 V23 M213 23 V16 H218 V23"/>
+                    <!-- fenêtres des ailes -->
+                    <path d="M154 53 H159 V62 H154 Z M167 53 H172 V62 H167 Z M180 53 H185 V62 H180 Z"/>
+                    <path d="M154 68 H159 V77 H154 Z M167 68 H172 V77 H167 Z M180 68 H185 V77 H180 Z"/>
+                    <path d="M233 53 H238 V62 H233 Z M246 53 H251 V62 H246 Z M258 53 H263 V62 H258 Z"/>
+                    <path d="M233 68 H238 V77 H233 Z M246 68 H251 V77 H246 Z M258 68 H263 V77 H258 Z"/>
+                    <!-- fenêtres et porte du pavillon -->
+                    <path d="M198 46 H203 V54 H198 Z M215 46 H220 V54 H215 Z M206.5 46 H211.5 V54 H206.5 Z"/>
+                    <path d="M198 60 H203 V68 H198 Z M215 60 H220 V68 H215 Z"/>
+                    <path d="M203 84 V73 A6 6 0 0 1 215 73 V84"/>
+                    <path d="M209 67 V84"/>
+
+                    <!-- tour ronde à droite -->
+                    <path d="M296 84 V50 H334 V84"/>
+                    <path d="M291 50 L315 27 L339 50 Z"/>
+                    <path d="M315 27 V19"/>
+                    <path d="M313 58 V68 M317 58 V68"/>
+
+                    <!-- buis taillés en boule -->
+                    <path d="M100 84 C98 72 106 66 116 66 C126 66 134 72 132 84 Z" fill="#0f2a4a"/>
+                    <path d="M108 76 C110 72 114 71 118 72 M114 80 C118 77 124 77 127 79"/>
+                    <path d="M266 84 C264 74 270 69 278 69 C286 69 292 74 290 84 Z" fill="#0f2a4a"/>
+                    <path d="M288 84 C286 72 295 65 305 65 C315 65 324 72 322 84 Z" fill="#0f2a4a"/>
+                    <path d="M296 76 C299 72 304 71 308 72 M300 80 C305 77 311 77 316 79"/>
+                    <path d="M270 77 C272 74 276 73 280 74"/>
                 </svg>
             </div>
 
