@@ -111,6 +111,8 @@
 
     function cleanUp() {
         if (stage) { stage.remove(); stage = null; }
+        var liveRoot = rootOf(document);
+        if (liveRoot) { liveRoot.style.transition = ""; liveRoot.style.clipPath = ""; }
         Object.keys(frames).forEach(function (k) {
             frames[k].style.visibility = "hidden";
             frames[k].style.transition = "";
@@ -244,11 +246,7 @@
         var count = strips.length;
         var started = null;
 
-        function frame(now) {
-
-            if (started === null) { started = now; }
-
-            var t = clamp((now - started) / DURATION, 0, 1);
+        function draw(t) {
 
             // p : 0 = page à plat sur le dessus, 1 = page entièrement tournée
             var p = direction > 0 ? t : 1 - t;
@@ -285,6 +283,16 @@
             // la page s'efface en fin de course : la suivante est déjà dessous
             stage.style.opacity = (1 - clamp((p - 0.74) / 0.24, 0, 1)).toFixed(3);
 
+        }
+
+        function frame(now) {
+
+            if (started === null) { started = now; }
+
+            var t = clamp((now - started) / DURATION, 0, 1);
+
+            draw(t);
+
             if (t < 1) {
                 requestAnimationFrame(frame);
             } else {
@@ -292,7 +300,59 @@
             }
         }
 
+        // état initial posé tout de suite, avant le premier affichage
+        draw(0);
+
         requestAnimationFrame(frame);
+    }
+
+
+    // En revenant en arrière, la feuille qui arrive n'a pas la même hauteur
+    // que celle qu'elle recouvre : on fait grandir (ou rétrécir) l'une des
+    // deux pendant le tour pour éviter tout débordement ou saut à l'arrivée.
+    function matchHeights(incoming) {
+
+        var vh = window.innerHeight;
+        var live = sheetOf(document);
+
+        if (!live) { return; }
+
+        var lr = live.getBoundingClientRect();
+        var under = Math.min(vh, lr.bottom);
+        var coming = Math.min(vh, incoming.bottom);
+
+        if (coming > under + 1) {
+
+            // la nouvelle feuille est plus haute : elle se déploie en arrivant
+            stage.style.transition = "none";
+            stage.style.clipPath = "inset(0 0 " + Math.round(vh - under) + "px 0)";
+
+            void stage.offsetHeight;
+
+            stage.style.transition =
+                "clip-path " + Math.round(DURATION * 0.6) + "ms ease-in-out " + Math.round(DURATION * 0.35) + "ms";
+            stage.style.clipPath = "inset(0 0 0 0)";
+        }
+
+        // la feuille du dessous dépasse (en haut si elle est défilée,
+        // en bas si elle est plus haute) : on la rogne pendant le tour
+        var topCut = Math.max(0, Math.round(incoming.top - lr.top));
+        var bottomCut = coming < under - 1 ? Math.round(lr.bottom - coming) : 0;
+
+        if ((topCut > 0 || bottomCut > 0) && live === rootOf(document)) {
+
+            var edge = "-80px";
+
+            live.style.transition = "none";
+            live.style.clipPath = "inset(" + edge + " " + edge + " 0px " + edge + ")";
+
+            void live.offsetHeight;
+
+            live.style.transition =
+                "clip-path " + Math.round(DURATION * 0.45) + "ms ease-out " + Math.round(DURATION * 0.5) + "ms";
+            live.style.clipPath =
+                "inset(" + topCut + "px " + edge + " " + bottomCut + "px " + edge + ")";
+        }
     }
 
 
@@ -308,7 +368,10 @@
             scrollY: forward ? window.scrollY : 0,
             start: function (rect) {
 
-                if (!forward) { return; }
+                if (!forward) {
+                    matchHeights(rect);
+                    return;
+                }
 
                 // La page suivante ne doit pas dépasser sous le bas de la page
                 // qui se tourne : on ne la dévoile qu'à hauteur de celle-ci,
