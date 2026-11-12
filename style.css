@@ -820,30 +820,6 @@ h1 span {
   text-align: center;
 }
 
-.wedding-date {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 30px;
-  padding: 28px;
-  border-top: 1px solid rgba(15, 42, 74, 0.18);
-  border-bottom: 1px solid rgba(15, 42, 74, 0.18);
-}
-
-.wedding-date span {
-  font-family: "Inter", sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  color: var(--gold-text);
-}
-
-.wedding-date strong {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.7rem;
-  font-weight: 500;
-  color: var(--night);
-}
-
 .wedding-intro > p {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.25rem;
@@ -987,10 +963,6 @@ h1 span {
 /* DRESS CODE */
 
 .dress-code {
-  text-align: center;
-}
-
-.dress-code .section-label {
   text-align: center;
 }
 
@@ -1607,4 +1579,16 @@ button:focus-visible {
   font-style: italic;
   line-height: 1.6;
   color: var(--night-soft);
+}
+
+
+/* Date du mariage sous le titre */
+
+.page-header > p.page-date:last-child {
+  margin-top: 18px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.5rem, 4.5vw, 2.1rem);
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--night);
 }
