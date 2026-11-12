@@ -113,6 +113,8 @@
         if (stage) { stage.remove(); stage = null; }
         Object.keys(frames).forEach(function (k) {
             frames[k].style.visibility = "hidden";
+            frames[k].style.transition = "";
+            frames[k].style.clipPath = "";
         });
         turning = false;
     }
@@ -237,7 +239,7 @@
 
         document.body.appendChild(stage);
 
-        if (o.start) { o.start(); }
+        if (o.start) { o.start(rect); }
 
         var count = strips.length;
         var started = null;
@@ -304,8 +306,24 @@
         runTurn(direction, {
             doc: forward ? document : destFrame.contentDocument,
             scrollY: forward ? window.scrollY : 0,
-            start: function () {
-                if (forward) { destFrame.style.visibility = "visible"; }
+            start: function (rect) {
+
+                if (!forward) { return; }
+
+                // La page suivante ne doit pas dépasser sous le bas de la page
+                // qui se tourne : on ne la dévoile qu'à hauteur de celle-ci,
+                // puis elle se déploie vers le bas pendant le tour.
+                var hidden = Math.max(0, Math.round(window.innerHeight - rect.bottom));
+
+                destFrame.style.transition = "none";
+                destFrame.style.clipPath = "inset(0 0 " + hidden + "px 0)";
+                destFrame.style.visibility = "visible";
+
+                void destFrame.offsetHeight;
+
+                destFrame.style.transition =
+                    "clip-path " + Math.round(DURATION * 0.5) + "ms ease-out " + Math.round(DURATION * 0.45) + "ms";
+                destFrame.style.clipPath = "inset(0 0 0 0)";
             },
             done: function () { location.href = url; }
         });
@@ -402,7 +420,9 @@
 
                 void contents.offsetHeight;   // fixe l'état de départ
 
-                contents.style.transition = "clip-path " + DURATION + "ms cubic-bezier(0.45, 0, 0.25, 1)";
+                contents.style.transition = opening
+                    ? "clip-path " + Math.round(DURATION * 0.5) + "ms ease-out " + Math.round(DURATION * 0.45) + "ms"
+                    : "clip-path " + Math.round(DURATION * 0.5) + "ms ease-in";
                 contents.style.clipPath = opening ? open : closed;
             };
 

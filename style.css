@@ -1457,7 +1457,8 @@ button:focus-visible {
    ========================================= */
 
 .title-screen {
-  margin-top: 45px;
+  width: min(100%, 580px);
+  margin: 36px auto 0;
   background: var(--night-deep);
   overflow: hidden;
 }
@@ -1470,24 +1471,24 @@ button:focus-visible {
 }
 
 .title-body {
-  padding: 26px 28px 30px;
+  padding: 20px 26px 22px;
   text-align: center;
 }
 
 .title-logo {
-  margin: 0 0 18px;
+  margin: 0 0 14px;
   font-family: "Press Start 2P", monospace;
-  font-size: clamp(0.95rem, 4.4vw, 1.5rem);
+  font-size: clamp(0.85rem, 4vw, 1.25rem);
   line-height: 1.4;
   color: var(--gold-bright);
   text-shadow: 3px 3px 0 #06121f;
 }
 
 .title-text {
-  max-width: 460px;
-  margin: 0 auto 26px;
+  max-width: 430px;
+  margin: 0 auto 18px;
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-style: italic;
   line-height: 1.55;
   color: var(--paper);
@@ -1528,8 +1529,12 @@ button:focus-visible {
 }
 
 @media (max-width: 700px) {
+  .title-screen {
+    margin-top: 28px;
+  }
+
   .title-body {
-    padding: 22px 18px 26px;
+    padding: 16px 16px 18px;
   }
 }
 
