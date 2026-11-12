@@ -1369,6 +1369,7 @@ h1 span {
 
 .travel-item {
   display: grid;
+  align-items: center;
   grid-template-columns: 60px 1fr;
   gap: 20px;
   padding: 28px 0;
@@ -1378,7 +1379,7 @@ h1 span {
 .travel-icon {
   display: flex;
   justify-content: center;
-  padding-top: 6px;
+  align-items: center;
 }
 
 .pixel-icon {
