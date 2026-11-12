@@ -382,12 +382,38 @@
                 if (v) { v.classList.remove("hidden"); v.style.visibility = ""; }
             };
 
+            // Le sommaire est plus haut que la couverture : on ne le dévoile
+            // que jusqu'à la hauteur de la couverture, puis il se déploie
+            // vers le bas pendant que la couverture se tourne.
+            var EDGE = "-80px";
+
+            var clipTo = function (extra) {
+                return "inset(" + EDGE + " " + EDGE + " " + extra + "px " + EDGE + ")";
+            };
+
+            var unfold = function (coverHeight, opening) {
+
+                var extra = Math.max(0, contents.offsetHeight - coverHeight);
+                var closed = clipTo(extra);
+                var open = "inset(" + EDGE + ")";
+
+                contents.style.transition = "none";
+                contents.style.clipPath = opening ? closed : open;
+
+                void contents.offsetHeight;   // fixe l'état de départ
+
+                contents.style.transition = "clip-path " + DURATION + "ms cubic-bezier(0.45, 0, 0.25, 1)";
+                contents.style.clipPath = opening ? open : closed;
+            };
+
             try {
                 if (!show) {
                     // on mesure la couverture sans la montrer
                     cover.style.visibility = "hidden";
                     cover.classList.remove("hidden");
                 }
+
+                var coverHeight = cover.getBoundingClientRect().height;
 
                 runTurn(show ? 1 : -1, {
                     doc: document,
@@ -400,8 +426,11 @@
                             cover.classList.add("hidden");
                             cover.style.visibility = "";
                         }
+                        unfold(coverHeight, show);
                     },
                     done: function () {
+                        contents.style.transition = "";
+                        contents.style.clipPath = "";
                         showContents(show);
                         if (stage) { stage.remove(); stage = null; }
                         turning = false;
@@ -410,6 +439,8 @@
 
             } catch (err) {
                 cover.style.visibility = "";
+                contents.style.transition = "";
+                contents.style.clipPath = "";
                 showContents(show);
                 if (stage) { stage.remove(); stage = null; }
                 turning = false;

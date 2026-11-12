@@ -1601,6 +1601,7 @@ button:focus-visible {
 .book > .cover,
 .book > .contents {
   grid-area: 1 / 1;
+  align-self: start;
 }
 
 .book > .contents {
